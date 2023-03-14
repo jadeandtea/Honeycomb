@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets/Scripts/MapRender.cs" />
+     <Compile Include="Assets/Scripts/playerMovement.cs" />
+     <Compile Include="Assets/Scripts/Point.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
