@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapRender : MonoBehaviour
 {
 
-    enum Type {
+    public enum Type {
         Flat, 
         Pointy
     }
@@ -11,85 +12,72 @@ public class MapRender : MonoBehaviour
     public float hexagonSize = 1.0f;
     [Range (0.0f, 1.0f)]
     public float outlineSize = 0.05f;
-    private int mapSize = 2;
-    private Point tempMapCoord = new Point(0, 0);
-
-    float vOffset;
-    float hOffset;
+    public Type type;
 
     HexagonMesh[,] map;
+    public List<Point> CurrentCoordinateList;
+    List<Point> Level_1 = new List<Point>{new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(0, 4)};
+
+    int MAXMAPSIZE = 10;
+
     void Start(){
         
-        map = new HexagonMesh[2 * mapSize, 2 * mapSize];
+        map = new HexagonMesh[2 * MAXMAPSIZE, 2 * MAXMAPSIZE];
 
-        initAxialPointy();
+        CurrentCoordinateList = new List<Point>();
+        loadMap(Level_1);
+        type = Type.Flat;
     }
 
-    void FixedUpdate() {  //For the purpose of changing hexagon sizes mid-game
-        vOffset = hexagonSize * Mathf.Sqrt(3) / 2;
-        hOffset = hexagonSize / 2;
-        for (int i = 0; i < 2 * mapSize; i++) {
-            for (int j = 0; j < 2 * mapSize; j++) {
-                map[i, j].update(hexagonSize, 1 - outlineSize);
+    void FixedUpdate() {  //For the purpose of changing hexagon sizes mid-game;
+        foreach(Point point in CurrentCoordinateList) {
+            map[point.x, point.y].updateSize(hexagonSize, 1 - outlineSize, type);
+            // Hex Positons are different based on if they are flat or pointy
+            if(type == Type.Flat){
+                map[point.x, point.y].updatePos(point.x * 3 / 4f * hexagonSize, (point.x * Mathf.Sqrt(3) / 4f + point.y * Mathf.Sqrt(3) / 2) * hexagonSize);
+            } else if (type == Type.Pointy) {
+                map[point.x, point.y].updatePos(point.x * Mathf.Sqrt(3) * hexagonSize / 2 + point.y * Mathf.Sqrt(3) / 4 * hexagonSize, point.y * 3 / 4f * hexagonSize);
             }
-        } 
+        }
     }
 
-    void initAxialFlat() {
-        //Using Axial Coordinates and Flat Top
-        for (int x = 0; x < 2 * mapSize; x++) {
-            for (int y = 0; y < 2 * mapSize; y++) {
-                tempMapCoord.Set(x - mapSize, y - mapSize);
+    void initMaxMap() {
+        //In a loop, create the list of game objects
+
+        Point tempMapCoord = new Point();
+        for (int x = 0; x < 2 * MAXMAPSIZE; x++) {
+            for (int y = 0; y < 2 * MAXMAPSIZE; y++) {
+                tempMapCoord.Set(x - MAXMAPSIZE, y - MAXMAPSIZE);
                 int s = - tempMapCoord.x - tempMapCoord.y;
 
                 GameObject tempHexRef = new GameObject("(" + tempMapCoord.x + ", " + tempMapCoord.y + ", " + s + ")");
-                
-                tempHexRef.transform.position = new Vector3(tempMapCoord.x * 3 / 4f * hexagonSize, (tempMapCoord.x * Mathf.Sqrt(3) / 4f + tempMapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSize, 0);
+                tempHexRef.transform.position = Vector3.zero;
 
                 HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize, 1 - outlineSize, Type.Flat);
                 map[x, y] = point;
+
+                CurrentCoordinateList.Add(new Point(x, y));
                 
                 tempHexRef.transform.SetParent(this.transform);
             }
         }
     }
 
-    void initAxialPointy() {
-        for (int x = 0; x < 2 * mapSize; x++) {
-            for (int y = 0; y < 2 * mapSize; y++) {
-                tempMapCoord.Set(x - mapSize, y - mapSize);
-                int s = - tempMapCoord.x - tempMapCoord.y;
+    void loadMap(List<Point> levelMap) {
+        //Loading a map creates the game objects
 
-                GameObject tempHexRef = new GameObject("(" + tempMapCoord.x + ", " + tempMapCoord.y + ", " + s + ")");
-                
-                tempHexRef.transform.position = new Vector3(tempMapCoord.x * Mathf.Sqrt(3) * hexagonSize / 2 + tempMapCoord.y * Mathf.Sqrt(3) / 4 * hexagonSize, tempMapCoord.y * 3 / 4f * hexagonSize, 0);
+        foreach(Point coord in levelMap) {
+            int s = -coord.x - coord.y;
 
-                HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize, 1 - outlineSize, Type.Pointy);
-                map[x, y] = point;
-                
-                tempHexRef.transform.SetParent(this.transform);
-            }
-        }
-    }
+            GameObject tempHexRef = new GameObject("(" + coord.x + ", " + coord.y + ", " + s + ")");
+            tempHexRef.transform.position = Vector3.zero;
 
-    void initOffsetFlat() {
-        // Using Offset Coordinates and Flat top
-        for (int i = 0; i < 2 * mapSize; i++) {
-            for (int j = 0; j < 2 * mapSize; j++) {
-                tempMapCoord.Set(i - mapSize, j - mapSize);
-                if(tempMapCoord.x < 0 && tempMapCoord.x % 2 != 0) tempMapCoord.y++;
+            HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize, 1 - outlineSize, Type.Flat);
+            map[coord.x, coord.y] = point;
 
-                GameObject tempHexRef = new GameObject("(" + tempMapCoord.x + ", " + tempMapCoord.y + ")");
-                vOffset = hexagonSize * Mathf.Sqrt(3) / 2;
-                hOffset = hexagonSize / 2;
-                
-                tempHexRef.transform.position = new Vector3(tempMapCoord.x * hexagonSize * 3 / 4, tempMapCoord.y * vOffset + tempMapCoord.x % 2 * vOffset / 2, 0);
-
-                HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize, 1 - outlineSize, Type.Flat);
-                map[i, j] = point;
-
-                tempHexRef.transform.SetParent(this.transform);
-            }
+            CurrentCoordinateList.Add(coord);
+            
+            tempHexRef.transform.SetParent(this.transform);
         }
     }
 
@@ -108,8 +96,8 @@ public class MapRender : MonoBehaviour
         Vector3[] normals;
         int[] triangles;
 
-        public GameObject point;
-        public int zLayer = 0;
+        GameObject point;
+        int zLayer = 0;
 
         Type type;
 
@@ -138,9 +126,11 @@ public class MapRender : MonoBehaviour
             meshRenderer.material = new Material(Shader.Find("Standard"));
         }
 
-        public void update(float hexagonSize, float outlineSize) {
+        public void updateSize(float hexagonSize, float outlineSize, Type type) {
+
             this.hexagonSize = hexagonSize;
             this.outlineSize = outlineSize;
+            this.type = type;
 
             mesh = calculateMesh(mesh);
 
@@ -149,14 +139,18 @@ public class MapRender : MonoBehaviour
             meshRenderer.material = new Material(Shader.Find("Standard"));
         }
 
+        public void updatePos(float newX, float newY) {
+
+            point.transform.position = new Vector3(newX, newY, zLayer);
+
+        }
+
         Mesh calculateMesh(Mesh mesh) {
             mesh.Clear();
 
             //Central point coordinates
             float posX = point.transform.position.x;
             float posY = point.transform.position.y;
-
-            /* Calculations using Trigonometry */
 
             vertices = new Vector3[7];
 
@@ -170,7 +164,7 @@ public class MapRender : MonoBehaviour
                     vertices[i + 4] = new Vector3(posX + hexagonSize * Mathf.Cos(angle_rad) * outlineSize, posY + hexagonSize * Mathf.Sin(angle_rad) * outlineSize, zLayer);
                 }
                 vertices[0] = point.transform.position;
-            } else {
+            } else if (type == Type.Pointy) {
                 //Pointy Top
                 // Only difference from the last is this starts at 30°, so + Pi/6
                 vertices = new Vector3[7];
