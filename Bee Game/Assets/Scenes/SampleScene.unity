@@ -168,7 +168,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb071be290164fae8738fc653eae3a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapPosition: {x: 0, y: 0}
+  mapPosition:
+    x: 0
+    y: 0
+  cache:
+    x: 0
+    y: 0
   moveSpeed: 7
   turnSpeed: 5
 --- !u!212 &71727680
@@ -530,6 +535,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hexagonSize: 1
   outlineSize: 0.05
+  type: 0
+  CurrentCoordinateList: []
 --- !u!4 &2099623795
 Transform:
   m_ObjectHideFlags: 0

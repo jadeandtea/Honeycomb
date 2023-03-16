@@ -4,28 +4,29 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
     float hexagonSize;
-    //Location of player in Hex grid
-    [SerializeField]
-    //Any Coordinates are stored in Axial
-    Point mapPosition;
-    [SerializeField]
+    Point newMapPosition;
     Stack<Point> previousMoves = new Stack<Point>();
     MapRender parentScript;
-    Vector3 targetPosition = new Vector3(0, 0, -1);
-    Vector3 targetAngle = Vector3.zero;
+    Vector3 targetPosition;
+    Vector3 targetAngle;
 
     public int moveSpeed = 7;
     public float turnSpeed = 5f;
+    private const int Z = 0;
     MapRender.Type type;
 
     void Start() {
         parentScript = this.transform.parent.GetComponent<MapRender>();
         hexagonSize = parentScript.hexagonSize;
-        mapPosition = new Point(0, 0);
 
         //Player starts at (0,0)
-        transform.position = targetPosition;
-        transform.eulerAngles = targetAngle;
+        previousMoves.Push(new Point(0, 0));
+        
+        newMapPosition = new Point();
+        newMapPosition.Copy(previousMoves.Peek());
+
+        targetPosition = new Vector3(0, 0, Z);
+        targetAngle = Vector3.zero;
     }
 
     void Update()
@@ -33,18 +34,16 @@ public class playerMovement : MonoBehaviour
         this.hexagonSize = parentScript.hexagonSize;
         this.type = parentScript.type;
 
-        if(type == MapRender.Type.Flat){
+        if(Input.anyKeyDown) {
             movementFlat();
-        } else if (type == MapRender.Type.Pointy) {
-            movementPointy();
         }
-        if(!inMap()) {
-            mapPosition = previousMoves.Pop();
-        }
+
+        newMapPosition.Copy(previousMoves.Peek());
 
         calculateScreenPosition();
 
         smoothMove();
+        smoothRotate();
     }
 
     void calculateScreenPosition() {
@@ -54,10 +53,11 @@ public class playerMovement : MonoBehaviour
         For some reason I have to double the position of the player so that it renders
         in the center of the hexagon; not sure why 
         */
+        Point nextPosition = previousMoves.Peek();
         if (type == MapRender.Type.Flat) {
-            targetPosition = new Vector3(mapPosition.x * 3 / 2f * hexagonSize, (mapPosition.x * Mathf.Sqrt(3) / 2f + mapPosition.y * Mathf.Sqrt(3)) * hexagonSize, transform.position.z);
+            targetPosition = new Vector3(nextPosition.x * 3 / 2f * hexagonSize, (nextPosition.x * Mathf.Sqrt(3) / 2f + nextPosition.y * Mathf.Sqrt(3)) * hexagonSize, Z);
         } else if (type == MapRender.Type.Pointy) {
-            targetPosition = new Vector3(mapPosition.x * Mathf.Sqrt(3) * hexagonSize + mapPosition.y * Mathf.Sqrt(3) / 2f * hexagonSize, mapPosition.y * 3 / 2f * hexagonSize, transform.position.z);
+            targetPosition = new Vector3(nextPosition.x * Mathf.Sqrt(3) * hexagonSize + nextPosition.y * Mathf.Sqrt(3) / 2f * hexagonSize, nextPosition.y * 3 / 2f * hexagonSize, Z);
         }
     }
 
@@ -71,97 +71,69 @@ public class playerMovement : MonoBehaviour
             D moves the character down-right
         */
 
-        if(Input.GetKeyDown(KeyCode.Q)){
-            mapPosition.x--;
-            mapPosition.y++;
-            targetAngle = new Vector3(0, 0, 60);
-        }
-        if(Input.GetKeyDown(KeyCode.W)){
-            mapPosition.y++;
-            targetAngle = new Vector3(0, 0, 0);
-        }
-        if(Input.GetKeyDown(KeyCode.E)){
-            mapPosition.x++;
-            targetAngle = new Vector3(0, 0, -60);
-        }
-        if(Input.GetKeyDown(KeyCode.A)){
-            mapPosition.x--;
-            targetAngle = new Vector3(0, 0, 120);
-        }
-        if(Input.GetKeyDown(KeyCode.S)){
-            mapPosition.y--;
-            targetAngle = new Vector3(0, 0, 180);
-        }
-        if(Input.GetKeyDown(KeyCode.D)){
-            mapPosition.x++;
-            mapPosition.y--;
-            targetAngle = new Vector3(0, 0, -120);
-        }
+        Point previousMapPosition = new Point();
+        previousMapPosition.Copy(previousMoves.Peek());
 
-        //After moving, add the position to the stack
-        previousMoves.Push(new Point(mapPosition));
-    }
-
-    void movementPointy() {
-        /*  Logic for moving around the grid using qweasd and rotating player
-            Q moves the character up-left
-            W moves the character up-right
-            A moves the character left
-            S moves the character right
-            Z moves the character down-left
-            X moves the character down-right
-        */
         if(Input.GetKeyDown(KeyCode.Q)){
-            mapPosition.x--;
-            mapPosition.y++;
+            newMapPosition.x--;
+            newMapPosition.y++;
             targetAngle = new Vector3(0, 0, 60);
-        }
-        if(Input.GetKeyDown(KeyCode.W)){
-            mapPosition.y++;
+        } else if(Input.GetKeyDown(KeyCode.W)){
+            newMapPosition.y++;
             targetAngle = new Vector3(0, 0, 0);
-        }
-        if(Input.GetKeyDown(KeyCode.A)){
-            mapPosition.x--;
+        } else if(Input.GetKeyDown(KeyCode.E)){
+            newMapPosition.x++;
             targetAngle = new Vector3(0, 0, 300);
-        }
-        if(Input.GetKeyDown(KeyCode.S)){
-            mapPosition.x++;
+        } else if(Input.GetKeyDown(KeyCode.A)){
+            newMapPosition.x--;
             targetAngle = new Vector3(0, 0, 120);
-        }
-        if(Input.GetKeyDown(KeyCode.Z)){
-            mapPosition.y--;
+        } else if(Input.GetKeyDown(KeyCode.S)){
+            newMapPosition.y--;
             targetAngle = new Vector3(0, 0, 180);
-        }
-        if(Input.GetKeyDown(KeyCode.X)){
-            mapPosition.x++;
-            mapPosition.y--;
+        } else if(Input.GetKeyDown(KeyCode.D)){
+            newMapPosition.x++;
+            newMapPosition.y--;
             targetAngle = new Vector3(0, 0, 240);
+        }
+
+        //Move player if the new point is within map boundaries
+        if(inMap(newMapPosition) && !previousMapPosition.Equals(newMapPosition)) {
+            previousMoves.Push(new Point(newMapPosition));
         }
     }
 
     void smoothMove() {
-        //TODO Fix rotation
+
         Vector3 dir = targetPosition - transform.position;
-        Vector3 rot;
-        if (targetAngle.z < 0) {
-            rot = targetAngle - (transform.eulerAngles - new Vector3(0, 0, 360));
-        } else {
-            rot = targetAngle - transform.eulerAngles;
-        }
 
         transform.position += dir * Time.deltaTime * moveSpeed;
-        transform.eulerAngles += rot * Time.deltaTime * turnSpeed;
         
-        if (Vector3.Magnitude(transform.position - targetPosition) < 0.1f) {
+        if (Vector3.Magnitude(transform.position - targetPosition) < 0.001f) {
             transform.position = targetPosition;
         }
-        if (Vector3.Magnitude(transform.eulerAngles - targetAngle) < 0.1f) {
+    }
+
+    void smoothRotate() {
+        //Rotates player to face in recently moved direction
+
+        float rotationalDifference = targetAngle.z - transform.eulerAngles.z;
+
+        if(rotationalDifference > 180 ){
+            rotationalDifference = -(360 - rotationalDifference);
+        }
+        if(rotationalDifference < -180) {
+            rotationalDifference = 360 + rotationalDifference;
+        }
+
+        transform.eulerAngles += new Vector3(0, 0, rotationalDifference * Time.deltaTime * turnSpeed);
+
+        if (Vector3.Magnitude(transform.eulerAngles - targetAngle) < 0.3f) {
             transform.eulerAngles = targetAngle;
         }
     }
 
-    bool inMap() {
-        if(parentScript.CurrentCoordinateList.Contains(mapPosition)) {
+    bool inMap(Point point) {
+        if(parentScript.CurrentCoordinateList.Contains(point)) {
             return true;
         }
         return false;

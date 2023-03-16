@@ -16,7 +16,7 @@ public class MapRender : MonoBehaviour
 
     HexagonMesh[,] map;
     public List<Point> CurrentCoordinateList;
-    List<Point> Level_1 = new List<Point>{new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(0, 4)};
+    List<Point> Level_1 = new List<Point>{new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(0, 4), new Point(1, 2)};
 
     int MAXMAPSIZE = 10;
 
