@@ -20,7 +20,7 @@ m_EmbeddedPackageManifests:
 m_LocalPackages:
   m_LocalFileStatus: []
 m_ProjectPath: /Users/jadentian/Unity/Bee Game/Bee Game/Packages
-m_EditorVersion: 2021.3.20f1 (577897200b8b)
+m_EditorVersion: 2021.3.21f1 (1b156197d683)
 m_ResolvedPackages:
 - packageId: com.unity.collab-proxy@2.0.1
   testable: 0
