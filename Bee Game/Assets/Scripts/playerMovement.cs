@@ -95,10 +95,19 @@ public class playerMovement : MonoBehaviour
             newMapPosition.y--;
             targetAngle = new Vector3(0, 0, 240);
         }
+        if(Input.GetKeyDown(KeyCode.Z)) {
+            undoMove();
+        }
 
         //Move player if the new point is within map boundaries
-        if(inMap(newMapPosition) && !previousMapPosition.Equals(newMapPosition)) {
+        else if(inMap(newMapPosition) && !previousMapPosition.Equals(newMapPosition)) {
             previousMoves.Push(new Point(newMapPosition));
+        }
+    }
+
+    void undoMove() {
+        if(previousMoves.Count > 1){
+            newMapPosition = previousMoves.Pop();
         }
     }
 
@@ -133,7 +142,7 @@ public class playerMovement : MonoBehaviour
     }
 
     bool inMap(Point point) {
-        if(parentScript.CurrentCoordinateList.Contains(point)) {
+        if(parentScript.currentMapCoordinateList.Contains(point)) {
             return true;
         }
         return false;
