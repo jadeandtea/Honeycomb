@@ -12,8 +12,8 @@ public class playerMovement : MonoBehaviour
 
     public int moveSpeed = 7;
     public float turnSpeed = 5f;
-    private const int Z = 0;
-    MapRender.Type type;
+    private const int Z = -1;
+    MapRender.HexType type;
 
     void Start() {
         parentScript = this.transform.parent.GetComponent<MapRender>();
@@ -54,9 +54,9 @@ public class playerMovement : MonoBehaviour
         in the center of the hexagon; not sure why 
         */
         Point nextPosition = previousMoves.Peek();
-        if (type == MapRender.Type.Flat) {
+        if (type == MapRender.HexType.Flat) {
             targetPosition = new Vector3(nextPosition.x * 3 / 2f * hexagonSize, (nextPosition.x * Mathf.Sqrt(3) / 2f + nextPosition.y * Mathf.Sqrt(3)) * hexagonSize, Z);
-        } else if (type == MapRender.Type.Pointy) {
+        } else if (type == MapRender.HexType.Pointy) {
             targetPosition = new Vector3(nextPosition.x * Mathf.Sqrt(3) * hexagonSize + nextPosition.y * Mathf.Sqrt(3) / 2f * hexagonSize, nextPosition.y * 3 / 2f * hexagonSize, Z);
         }
     }
@@ -142,7 +142,7 @@ public class playerMovement : MonoBehaviour
     }
 
     bool inMap(Point point) {
-        if(parentScript.currentMapCoordinateList.Contains(point)) {
+        if(parentScript.openCoordinates.Contains(point)) {
             return true;
         }
         return false;

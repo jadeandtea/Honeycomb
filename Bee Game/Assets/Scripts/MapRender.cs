@@ -4,7 +4,7 @@ using UnityEngine;
 public class MapRender : MonoBehaviour
 {
 
-    public enum Type {
+    public enum HexType {
         Flat, 
         Pointy
     }
@@ -12,76 +12,38 @@ public class MapRender : MonoBehaviour
     public float hexagonSize = 1.0f;
     [Range (0.0f, 1.0f)]
     public float outlineSize = 0.05f;
-    public Type type;
+    public HexType type;
     Color32 hexColor;
     Color32 obsColor;
 
-    List<HexagonMesh> map;
+    List<HexagonMesh> meshes;
     //public so that player script can access
-    public List<Point> currentMapCoordinateList;
+    public List<Point> openCoordinates;
     List<HexagonMesh> obstacles;
-    
-    List<Point> lvl_1_Obs = new List<Point>{new Point(-1, 0)};
-    List<Point> lvl_1_Map = new List<Point>{new Point(-1, 0), new Point(-1, 1), new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(0, 4), new Point(1, 2)};
-
-    int MAXMAPSIZE = 10;
 
     void Start(){
         
-        map = new List<HexagonMesh>();
+        meshes = new List<HexagonMesh>();
         
-        currentMapCoordinateList = new List<Point>();
-        loadMap(lvl_1_Map);
-        obstacles = new List<HexagonMesh>();
-        loadObstacles(lvl_1_Obs);
+        openCoordinates = new List<Point>();
+        loadMap(Levels.lvl_1_Map);
 
-        type = Type.Flat;
+        obstacles = new List<HexagonMesh>();
+        loadObstacles(Levels.lvl_1_Obs);
+
+        type = HexType.Flat;
         //Makes a honey-like color after lerping with yellow, not going to touch :)
         hexColor = new Color32(255, 35, 0, 255);
         obsColor = Color.black;
     }
 
     void FixedUpdate() {  //For the purpose of modifying hexagons mid-game;
-        foreach(HexagonMesh mesh in map) {
-            mesh.updateColor(hexColor);
-            mesh.updateSize(hexagonSize, 1 - outlineSize, type);
-            // Hex Positons are different based on if they are flat or pointy
-            if(type == Type.Flat){
-                mesh.updatePos(hexagonSize);
-            } else if (type == Type.Pointy) {
-                mesh.updatePos(hexagonSize);
-            }
+        foreach(HexagonMesh mesh in meshes) {
+            mesh.updateHex(hexagonSize, 1 - outlineSize, type);
         }
         foreach(HexagonMesh mesh in obstacles) {
-            mesh.updateColor(Color.black);
-            mesh.updateSize(hexagonSize/2, 1 - outlineSize, type);
-            if(type == Type.Flat){
-                mesh.updatePos(hexagonSize);
-            } else if (type == Type.Pointy) {
-                mesh.updatePos(hexagonSize);
-            }
-        }
-    }
+            mesh.updateHex(hexagonSize, hexagonSize/2, 1 - outlineSize, type);
 
-    void initMaxMap() {
-        //In a loop, create the list of game objects
-
-        Point tempMapCoord = new Point();
-        for (int x = 0; x < 2 * MAXMAPSIZE; x++) {
-            for (int y = 0; y < 2 * MAXMAPSIZE; y++) {
-                tempMapCoord.Set(x - MAXMAPSIZE, y - MAXMAPSIZE);
-                int s = - tempMapCoord.x - tempMapCoord.y;
-
-                GameObject tempHexRef = new GameObject("(" + tempMapCoord.x + ", " + tempMapCoord.y + ", " + s + ")");
-                tempHexRef.transform.position = Vector3.zero;
-
-                HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize, 1 - outlineSize, Type.Flat, hexColor, new Point(x, y));
-                map.Add(point);
-
-                currentMapCoordinateList.Add(new Point(x, y));
-                
-                tempHexRef.transform.SetParent(this.transform);
-            }
         }
     }
 
@@ -94,10 +56,10 @@ public class MapRender : MonoBehaviour
             GameObject tempHexRef = new GameObject("(" + coord.x + ", " + coord.y + ", " + s + ")");
             tempHexRef.transform.position = Vector3.zero;
 
-            HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize, 1 - outlineSize, Type.Flat, hexColor, new Point(coord.x, coord.y));
-            map.Add(point);
+            HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize, 1 - outlineSize, HexType.Flat, hexColor, new Point(coord.x, coord.y));
+            meshes.Add(point);
 
-            currentMapCoordinateList.Add(coord);
+            openCoordinates.Add(coord);
             
             tempHexRef.transform.SetParent(this.transform);
         }
@@ -112,10 +74,10 @@ public class MapRender : MonoBehaviour
             GameObject tempHexRef = new GameObject("(" + coord.x + ", " + coord.y + ", " + s + ")");
             tempHexRef.transform.position = Vector3.zero;
 
-            HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize / 2, 1 - outlineSize, Type.Flat, obsColor, new Point(coord.x, coord.y), -0.1f);
+            HexagonMesh point = new HexagonMesh(tempHexRef, hexagonSize / 2, 1 - outlineSize, HexType.Flat, obsColor, new Point(coord.x, coord.y), -0.1f);
 
             obstacles.Add(point);
-            currentMapCoordinateList.Remove(coord);
+            openCoordinates.Remove(coord);
             
             tempHexRef.transform.SetParent(this.transform);
         }
@@ -124,11 +86,22 @@ public class MapRender : MonoBehaviour
 
     private class HexagonMesh
     {
-        float hexagonSize;
-        float outlineSize;
+        /* 
+        Custom class to handle all mesh creation and modifying during active
+        time. Constructor takes in a GameObject to center around and attach 
+        mesh to, size of the hexagon to be rendered, type of hexagon (flat/pointy),
+        a color, its map coordinates as a Point, and a default zLayer of 0 
+        (used to hexes if necessary).
+        
+        The updateHex function recalculates the details of the mesh, namely
+        the size, positon, and vertices. Should only need to called when the 
+        details of the mesh change, but I am unsure how to implement that.
+        Currently, it updates at FixedUpdate() in MapRender 50 times a second;
+        moving to only updating when necessary can help performance if it ever
+        comes to it.
+        */
 
         MeshRenderer meshRenderer;
-        Material test;
         MeshFilter meshFilter;
         Mesh mesh;
 
@@ -137,98 +110,108 @@ public class MapRender : MonoBehaviour
         Color32[] colors;
         int[] triangles;
 
-        GameObject center;
+        GameObject gameObject;
         Point mapCoord;
         float zLayer = 0;
 
-        Type type;
+        float hexagonSizeMap;
+        float hexagonSizeRender;
+        float outlineSize;
 
-        public HexagonMesh(GameObject point, float hexagonSize, float outlineSize, Type type, Color color, Point mapCoord, float zLayer = 0) {
+        HexType type;
+
+        public HexagonMesh(GameObject gameObject, float hexagonSize, float outlineSize, HexType type, Color color, Point mapCoord, float zLayer = 0) {
             //Given the location of where the hex is to be placed, render 6 triangles to form
             //a hexagon centered around the given point.
 
-            this.center = point;
-            this.hexagonSize = hexagonSize;
+            this.gameObject = gameObject;
+            this.hexagonSizeMap = hexagonSize;
+            this.hexagonSizeRender = hexagonSize;
             this.outlineSize = outlineSize;
             this.mapCoord = mapCoord;
             this.type = type;
             this.zLayer = zLayer;
 
-            meshFilter = point.AddComponent<MeshFilter>();
+            meshFilter = gameObject.AddComponent<MeshFilter>();
             mesh = new Mesh();
 
-            //Triangles render from left clockwise
-            //IDK what normals do, they are required or something
+            recalculateVertices();
             normals = new Vector3[7]{-Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward};
             triangles = new int[18]{0, 1, 2,  0, 2, 3,  0, 3, 4,  0, 4, 5,  0, 5, 6,  0, 6, 1};
+            setColor(color);
 
-            mesh = calculateMesh(mesh);
+            mesh = recalculateMesh(mesh);
 
             meshFilter.mesh = mesh;
 
-            meshRenderer = point.AddComponent<MeshRenderer>();
+            meshRenderer = gameObject.AddComponent<MeshRenderer>();
             meshRenderer.material = new Material(Shader.Find("Particles/Standard Unlit"));
         }
 
-        public void updateSize(float hexagonSize, float outlineSize, Type type) {
-
-            this.hexagonSize = hexagonSize;
+        public void updateHex(float hexagonSize, float outlineSize, HexType type) {
+            
+            this.hexagonSizeMap = hexagonSize;
             this.outlineSize = outlineSize;
             this.type = type;
+            recalculateVertices();
 
-            mesh = calculateMesh(mesh);
+            gameObject.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSize);
+
+            mesh = recalculateMesh(mesh);
 
             meshFilter.mesh = mesh;
-
-            meshRenderer.material = new Material(Shader.Find("Particles/Standard Unlit"));
         }
 
-        public void updatePos(float newX, float newY) {
+        public void updateHex(float hexagonSizeMap, float hexagonSizeRender, float outlineSize, HexType type) {
 
-            center.transform.position = new Vector3(newX, newY, zLayer);
+            this.hexagonSizeMap = hexagonSizeMap;
+            this.hexagonSizeRender = hexagonSizeRender;
+            this.outlineSize = outlineSize;
+            this.type = type;
+            recalculateVertices();
 
-        }
+            gameObject.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSizeMap, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSizeMap);
 
-        public void updatePos(float hexagonSize){
+            mesh = recalculateMesh(mesh);
 
-            center.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSize);
+            meshFilter.mesh = mesh;
+        } 
 
-        }
-
-        public void updateColor(Color color) {
+        public void setColor(Color color) {
             color = Color32.Lerp(Color.yellow, color, 0.3f);
             colors = new Color32[7]{Color32.Lerp(Color.yellow, color, 0.3f), color, color, color, color, color, color};
         }
 
-        Mesh calculateMesh(Mesh mesh) {
-            mesh.Clear();
-
-            //Central point coordinates
-            float posX = center.transform.position.x;
-            float posY = center.transform.position.y;
-
+        void recalculateVertices() {
             vertices = new Vector3[7];
 
-            if(type == Type.Flat) {
+            float posX = gameObject.transform.position.x;
+            float posY = gameObject.transform.position.y;
+
+            if(type == HexType.Flat) {
                 //Flat Top
                 // The angles for each point from the origin to it are 0°, 60°, 120°, 180°, 240°, 300°
                 // The for loop looks weird but it works;
                 // It starts at Pi (which is 0°) and moves around counterclockwise
                 for (int i = -3; i < 3; i++) {
                     var angle_rad = -Mathf.PI / 3 * i;
-                    vertices[i + 4] = new Vector3(posX + hexagonSize * Mathf.Cos(angle_rad) * outlineSize, posY + hexagonSize * Mathf.Sin(angle_rad) * outlineSize, zLayer);
+                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * outlineSize, zLayer);
                 }
-                vertices[0] = center.transform.position;
-            } else if (type == Type.Pointy) {
+                vertices[0] = gameObject.transform.position;
+            } else if (type == HexType.Pointy) {
                 //Pointy Top
                 // Only difference from the last is this starts at 30°, so + Pi/6
                 vertices = new Vector3[7];
                 for (int i = -3; i < 3; i++) {
                     var angle_rad = (-Mathf.PI / 3 * i) + Mathf.PI / 6;
-                    vertices[i + 4] = new Vector3(posX + hexagonSize * Mathf.Cos(angle_rad) * outlineSize, posY + hexagonSize * Mathf.Sin(angle_rad) * outlineSize, zLayer);
+                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * outlineSize, zLayer);
                 }
-                vertices[0] = center.transform.position;
+                vertices[0] = gameObject.transform.position;
             }
+        }
+
+        Mesh recalculateMesh(Mesh mesh) {
+            mesh.Clear();
             
             mesh.vertices = vertices;
             mesh.normals = normals;
