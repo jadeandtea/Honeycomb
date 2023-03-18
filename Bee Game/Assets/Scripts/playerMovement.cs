@@ -35,7 +35,11 @@ public class playerMovement : MonoBehaviour
         this.type = parentScript.type;
 
         if(Input.anyKeyDown) {
-            movementFlat();
+            if(type == MapRender.HexType.Flat) {
+                movementFlat();
+            } else if (type == MapRender.HexType.Pointy) {
+                movementPointy();
+            }
         }
 
         newMapPosition.Copy(previousMoves.Peek());
@@ -96,6 +100,55 @@ public class playerMovement : MonoBehaviour
             targetAngle = new Vector3(0, 0, 240);
         }
         if(Input.GetKeyDown(KeyCode.Z)) {
+            undoMove();
+        }
+
+        //Move player if the new point is within map boundaries
+        else if(inMap(newMapPosition) && !previousMapPosition.Equals(newMapPosition)) {
+            previousMoves.Push(new Point(newMapPosition));
+        }
+    }
+
+    void movementPointy() {
+        /*  Logic for moving around the grid using qweasd and rotating player
+            Q moves the character up-left
+            W moves the character up-right
+            A moves the character left
+            S moves the character right
+            Z moves the character down-left
+            X moves the character down-right
+        */
+
+        Point previousMapPosition = new Point();
+        previousMapPosition.Copy(previousMoves.Peek());
+
+        if(Input.GetKeyDown(KeyCode.Q)){
+            newMapPosition.x--;
+            newMapPosition.y++;
+            targetAngle = new Vector3(0, 0, 30);
+        }
+        if(Input.GetKeyDown(KeyCode.W)){
+            newMapPosition.y++;
+            targetAngle = new Vector3(0, 0, -30);
+        }
+        if(Input.GetKeyDown(KeyCode.A)){
+            newMapPosition.x--;
+            targetAngle = new Vector3(0, 0, 90);
+        }
+        if(Input.GetKeyDown(KeyCode.S)){
+            newMapPosition.x++;
+            targetAngle = new Vector3(0, 0, -90);
+        }
+        if(Input.GetKeyDown(KeyCode.Z)){
+            newMapPosition.y--;
+            targetAngle = new Vector3(0, 0, 150);
+        }
+        if(Input.GetKeyDown(KeyCode.X)){
+            newMapPosition.x++;
+            newMapPosition.y--;
+            targetAngle = new Vector3(0, 0, -150);
+        }
+        if(Input.GetKeyDown(KeyCode.D)) {
             undoMove();
         }
 

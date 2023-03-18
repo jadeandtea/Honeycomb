@@ -12,9 +12,11 @@ public static class Levels {
         new Point(0, 2), 
         new Point(0, 3), 
         new Point(0, 4), 
-        new Point(1, 2)
+        new Point(1, 2),
+        new Point(2, 1)
     };
-    public static List<Point> lvl_1_Objectives = new List<Point>{
-        new Point(0, 4)
+    public static List<Point> lvl_1_Flowers = new List<Point>{
+        new Point(0, 4),
+        new Point(2, 1)
     };
 }

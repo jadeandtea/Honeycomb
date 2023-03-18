@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine;
 
 public class MapRender : MonoBehaviour
@@ -18,8 +20,11 @@ public class MapRender : MonoBehaviour
 
     List<HexagonMesh> meshes;
     //public so that player script can access
+    [HideInInspector]
     public List<Point> openCoordinates;
     List<HexagonMesh> obstacles;
+    List<FlowerRender> flowers;
+    string[] flowerSpriteList;
 
     void Start(){
         
@@ -31,9 +36,12 @@ public class MapRender : MonoBehaviour
         obstacles = new List<HexagonMesh>();
         loadObstacles(Levels.lvl_1_Obs);
 
+        flowers = new List<FlowerRender>();
+        flowerSpriteList = new string[3]{"Assets/FlowerSpriteList/Black-eyed Susan.png", "Assets/FlowerSpriteList/Daisy.png", "Assets/FlowerSpriteList/Rose.png"};
+        loadFlowers(Levels.lvl_1_Flowers);
+
         type = HexType.Flat;
-        //Makes a honey-like color after lerping with yellow, not going to touch :)
-        hexColor = new Color32(255, 35, 0, 255);
+        hexColor = Color.yellow;
         obsColor = Color.black;
     }
 
@@ -43,7 +51,9 @@ public class MapRender : MonoBehaviour
         }
         foreach(HexagonMesh mesh in obstacles) {
             mesh.updateHex(hexagonSize, hexagonSize/2, 1 - outlineSize, type);
-
+        }
+        foreach(FlowerRender flower in flowers) {
+            flower.update(hexagonSize, type);
         }
     }
 
@@ -80,6 +90,24 @@ public class MapRender : MonoBehaviour
             openCoordinates.Remove(coord);
             
             tempHexRef.transform.SetParent(this.transform);
+        }
+    }
+
+    void loadFlowers(List<Point> flowerList) {
+        //Creates FlowerRender Game Objects
+
+        foreach(Point coord in flowerList) {
+            int s = -coord.x - coord.y;
+            
+            int flowerIndex = Random.Range(0, flowerSpriteList.Length);
+            GameObject tempFlowerRef = new GameObject("(" + coord.x + ", " + coord.y + ", " + s + ")");
+            tempFlowerRef.transform.position = Vector3.zero;
+
+            FlowerRender flower = new FlowerRender(tempFlowerRef, flowerSpriteList[flowerIndex], coord, hexagonSize, type);
+
+            flowers.Add(flower);
+
+            tempFlowerRef.transform.SetParent(this.transform);
         }
     }
 
@@ -151,11 +179,16 @@ public class MapRender : MonoBehaviour
         public void updateHex(float hexagonSize, float outlineSize, HexType type) {
             
             this.hexagonSizeMap = hexagonSize;
+            this.hexagonSizeRender = hexagonSize;
             this.outlineSize = outlineSize;
             this.type = type;
             recalculateVertices();
 
-            gameObject.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSize);
+            if(type == HexType.Flat) {
+                gameObject.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSize, zLayer);
+            } else if (type == HexType.Pointy) {
+                gameObject.transform.position = new Vector3(mapCoord.x * Mathf.Sqrt(3) * hexagonSize / 2 + mapCoord.y * Mathf.Sqrt(3) / 4 * hexagonSize, mapCoord.y * 3 / 4f * hexagonSize, zLayer);
+            }
 
             mesh = recalculateMesh(mesh);
 
@@ -169,8 +202,12 @@ public class MapRender : MonoBehaviour
             this.outlineSize = outlineSize;
             this.type = type;
             recalculateVertices();
-
-            gameObject.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSizeMap, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSizeMap);
+            if(type == HexType.Flat) {
+                gameObject.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSizeMap, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSizeMap, zLayer);
+            } else if (type == HexType.Pointy) {
+                gameObject.transform.position = new Vector3(mapCoord.x * Mathf.Sqrt(3) * hexagonSizeMap / 2 + mapCoord.y * Mathf.Sqrt(3) / 4 * hexagonSizeMap, mapCoord.y * 3 / 4f * hexagonSizeMap, zLayer);
+            }
+            
 
             mesh = recalculateMesh(mesh);
 
