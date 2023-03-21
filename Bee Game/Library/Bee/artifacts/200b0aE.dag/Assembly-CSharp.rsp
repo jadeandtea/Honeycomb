@@ -371,6 +371,8 @@
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/CameraScript.cs"
 "Assets/Scripts/FlowerRender.cs"
+"Assets/Scripts/Level.cs"
+"Assets/Scripts/LevelManager.cs"
 "Assets/Scripts/Levels.cs"
 "Assets/Scripts/MapRender.cs"
 "Assets/Scripts/playerMovement.cs"

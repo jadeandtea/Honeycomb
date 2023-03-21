@@ -13,7 +13,9 @@ public class playerMovement : MonoBehaviour
     public int moveSpeed = 7;
     public float turnSpeed = 5f;
     private const int Z = -1;
+    int flightLength;
     MapRender.HexType type;
+    LevelManager levelManager;
 
     void Start() {
         parentScript = this.transform.parent.GetComponent<MapRender>();
@@ -27,6 +29,10 @@ public class playerMovement : MonoBehaviour
 
         targetPosition = new Vector3(0, 0, Z);
         targetAngle = Vector3.zero;
+
+        levelManager = new LevelManager();
+
+        flightLength = 3;
     }
 
     void Update()
@@ -40,6 +46,7 @@ public class playerMovement : MonoBehaviour
             } else if (type == MapRender.HexType.Pointy) {
                 movementPointy();
             }
+            levelManager.onPlayerMove();
         }
 
         newMapPosition.Copy(previousMoves.Peek());
@@ -199,5 +206,9 @@ public class playerMovement : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public Point getLocation() {
+        return new Point(previousMoves.Peek());
     }
 }

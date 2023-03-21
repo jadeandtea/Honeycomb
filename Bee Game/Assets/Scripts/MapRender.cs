@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine;
 
 public class MapRender : MonoBehaviour
