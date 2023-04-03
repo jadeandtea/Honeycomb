@@ -6,39 +6,42 @@ public class playerMovement : MonoBehaviour
     float hexagonSize;
     Point newMapPosition;
     Stack<Point> previousMoves = new Stack<Point>();
-    MapRender parentScript;
+    MapRender mapRender;
+    MapManager mapManager;
     Vector3 targetPosition;
     Vector3 targetAngle;
 
     public int moveSpeed = 7;
     public float turnSpeed = 5f;
-    private const int Z = -1;
-    int flightLength;
+    private const float ZLAYER = -1.01f;
     MapRender.HexType type;
     LevelManager levelManager;
 
+    Transform home;
+
     void Start() {
-        parentScript = this.transform.parent.GetComponent<MapRender>();
-        hexagonSize = parentScript.hexagonSize;
+        mapRender = this.transform.parent.GetComponent<MapRender>();
+        home = this.transform.parent.GetChild(1);
+        hexagonSize = mapRender.hexagonSize;
 
         //Player starts at (0,0)
+        //TODO set starting point based on level
         previousMoves.Push(new Point(0, 0));
+        home.transform.position = calculateScreenPosition(new Point());
         
         newMapPosition = new Point();
         newMapPosition.Copy(previousMoves.Peek());
 
-        targetPosition = new Vector3(0, 0, Z);
+        targetPosition = new Vector3(0, 0, ZLAYER);
         targetAngle = Vector3.zero;
 
-        levelManager = new LevelManager();
-
-        flightLength = 3;
+        levelManager = new LevelManager(1);
     }
 
     void Update()
     {
-        this.hexagonSize = parentScript.hexagonSize;
-        this.type = parentScript.type;
+        this.hexagonSize = mapRender.hexagonSize;
+        this.type = mapRender.type;
 
         if(Input.anyKeyDown) {
             if(type == MapRender.HexType.Flat) {
@@ -51,25 +54,27 @@ public class playerMovement : MonoBehaviour
 
         newMapPosition.Copy(previousMoves.Peek());
 
-        calculateScreenPosition();
+        targetPosition = calculateScreenPosition(previousMoves.Peek());
 
         smoothMove();
         smoothRotate();
     }
 
-    void calculateScreenPosition() {
+    Vector3 calculateScreenPosition(Point nextPosition) {
         //Calculations for rendering player in correct Hex
 
         /*
         For some reason I have to double the position of the player so that it renders
         in the center of the hexagon; not sure why 
         */
-        Point nextPosition = previousMoves.Peek();
         if (type == MapRender.HexType.Flat) {
-            targetPosition = new Vector3(nextPosition.x * 3 / 2f * hexagonSize, (nextPosition.x * Mathf.Sqrt(3) / 2f + nextPosition.y * Mathf.Sqrt(3)) * hexagonSize, Z);
+            return new Vector3(nextPosition.x * 3 / 2f * hexagonSize, (nextPosition.x * Mathf.Sqrt(3) / 2f + nextPosition.y * Mathf.Sqrt(3)) * hexagonSize, ZLAYER);
         } else if (type == MapRender.HexType.Pointy) {
-            targetPosition = new Vector3(nextPosition.x * Mathf.Sqrt(3) * hexagonSize + nextPosition.y * Mathf.Sqrt(3) / 2f * hexagonSize, nextPosition.y * 3 / 2f * hexagonSize, Z);
+            return new Vector3(nextPosition.x * Mathf.Sqrt(3) * hexagonSize + nextPosition.y * Mathf.Sqrt(3) / 2f * hexagonSize, nextPosition.y * 3 / 2f * hexagonSize, ZLAYER);
         }
+        //Should never get here
+        Debug.Log("playerMovement Error: Misdefined HexType");
+        return Vector3.zero;
     }
 
     void movementFlat() {
@@ -83,31 +88,37 @@ public class playerMovement : MonoBehaviour
         */
 
         Point previousMapPosition = new Point();
+        Point movementAmount = new Point();
         previousMapPosition.Copy(previousMoves.Peek());
 
         if(Input.GetKeyDown(KeyCode.Q)){
-            newMapPosition.x--;
-            newMapPosition.y++;
+            movementAmount.Set(-1, 1);
             targetAngle = new Vector3(0, 0, 60);
         } else if(Input.GetKeyDown(KeyCode.W)){
-            newMapPosition.y++;
+            movementAmount.Set(0, 1);
             targetAngle = new Vector3(0, 0, 0);
         } else if(Input.GetKeyDown(KeyCode.E)){
-            newMapPosition.x++;
+            movementAmount.Set(1, 0);
             targetAngle = new Vector3(0, 0, 300);
         } else if(Input.GetKeyDown(KeyCode.A)){
-            newMapPosition.x--;
+            movementAmount.Set(-1, 0);
             targetAngle = new Vector3(0, 0, 120);
         } else if(Input.GetKeyDown(KeyCode.S)){
-            newMapPosition.y--;
+            movementAmount.Set(0, -1);
             targetAngle = new Vector3(0, 0, 180);
         } else if(Input.GetKeyDown(KeyCode.D)){
-            newMapPosition.x++;
-            newMapPosition.y--;
+            movementAmount.Set(1, -1);
             targetAngle = new Vector3(0, 0, 240);
         }
+
+        newMapPosition.Add(movementAmount);
+        int index = mapRender.mapManager.getObstacles().IndexOf(new Obstacle(newMapPosition));
+
         if(Input.GetKeyDown(KeyCode.Z)) {
             undoMove();
+        }
+        else if (index >= 0) {
+            mapRender.moveObstacle(index, movementAmount);
         }
 
         //Move player if the new point is within map boundaries
@@ -127,36 +138,42 @@ public class playerMovement : MonoBehaviour
         */
 
         Point previousMapPosition = new Point();
+        Point movementAmount = new Point();
         previousMapPosition.Copy(previousMoves.Peek());
 
         if(Input.GetKeyDown(KeyCode.Q)){
-            newMapPosition.x--;
-            newMapPosition.y++;
+            movementAmount.Set(-1, 1);
             targetAngle = new Vector3(0, 0, 30);
         }
         if(Input.GetKeyDown(KeyCode.W)){
-            newMapPosition.y++;
+            movementAmount.Set(0, 1);
             targetAngle = new Vector3(0, 0, -30);
         }
         if(Input.GetKeyDown(KeyCode.A)){
-            newMapPosition.x--;
+            movementAmount.Set(-1, 0);
             targetAngle = new Vector3(0, 0, 90);
         }
         if(Input.GetKeyDown(KeyCode.S)){
-            newMapPosition.x++;
+            movementAmount.Set(1, 0);
             targetAngle = new Vector3(0, 0, -90);
         }
         if(Input.GetKeyDown(KeyCode.Z)){
-            newMapPosition.y--;
+            movementAmount.Set(0, -1);
             targetAngle = new Vector3(0, 0, 150);
         }
         if(Input.GetKeyDown(KeyCode.X)){
-            newMapPosition.x++;
-            newMapPosition.y--;
+            movementAmount.Set(1, -1);
             targetAngle = new Vector3(0, 0, -150);
         }
-        if(Input.GetKeyDown(KeyCode.D)) {
+
+        newMapPosition.Add(movementAmount);
+        int index = mapRender.mapManager.getObstacles().IndexOf(new Obstacle(newMapPosition));
+
+        if(Input.GetKeyDown(KeyCode.Z)) {
             undoMove();
+        }
+        else if (index >= 0) {
+            mapRender.moveObstacle(index, movementAmount);
         }
 
         //Move player if the new point is within map boundaries
@@ -202,10 +219,8 @@ public class playerMovement : MonoBehaviour
     }
 
     bool inMap(Point point) {
-        if(parentScript.openCoordinates.Contains(point)) {
-            return true;
-        }
-        return false;
+        mapManager = mapRender.mapManager;
+        return mapManager.getCoordinates().Contains(point);
     }
 
     public Point getLocation() {

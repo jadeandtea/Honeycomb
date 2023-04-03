@@ -8,12 +8,15 @@ public class Level {
     public int initialFlightLength;
     public int levelNumber;
 
-    public Level(List<Point> obstacles, List<Point> map, List<Point> flowers, int flightLength, int levelNumber) {
+    public Level(List<Point> obstacles, List<Point> map, List<Point> flowers, int levelNumber) {
         this.obstacles = obstacles;
         this.map = map;
         this.flowers = flowers;
-        this.initialFlightLength = flightLength;
         this.levelNumber = levelNumber;
+    }
+
+    public Level() {
+        //Don't remove yet, used to get rid of compile erros
     }
 
     public List<Point> getObstacles() {
@@ -32,11 +35,16 @@ public class Level {
         return obj is Level level && EqualityComparer<int>.Default.Equals(levelNumber, level.levelNumber);
     }
 
+    public bool Equals(int levelNumber){
+        return this.levelNumber == levelNumber;
+    }
+    //Unecessary
     public override int GetHashCode()
     {
         return base.GetHashCode();
     }
 
+    //Unecessary
     public override string ToString()
     {
         return "Level #" + levelNumber;

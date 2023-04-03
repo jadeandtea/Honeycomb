@@ -21,8 +21,8 @@ public class CameraScript : MonoBehaviour
             ySum += child.position.y;
         }
 
-        float xAvg = xSum / mapRender.openCoordinates.Count;
-        float yAvg = ySum / mapRender.openCoordinates.Count;
+        float xAvg = xSum / mapRender.mapManager.getCoordinates().Count;
+        float yAvg = ySum / mapRender.mapManager.getCoordinates().Count;
         
         smoothMove(new Vector3(xAvg, yAvg, transform.position.z));
     }

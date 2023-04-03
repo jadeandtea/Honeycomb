@@ -370,13 +370,17 @@
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/CameraScript.cs"
-"Assets/Scripts/FlowerRender.cs"
+"Assets/Scripts/Flower.cs"
+"Assets/Scripts/HexagonMesh.cs"
 "Assets/Scripts/Level.cs"
 "Assets/Scripts/LevelManager.cs"
 "Assets/Scripts/Levels.cs"
+"Assets/Scripts/MapManager.cs"
 "Assets/Scripts/MapRender.cs"
+"Assets/Scripts/Obstacle.cs"
 "Assets/Scripts/playerMovement.cs"
 "Assets/Scripts/Point.cs"
+"Assets/Scripts/Tile.cs"
 -langversion:9.0
 
 /deterministic
