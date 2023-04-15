@@ -3,11 +3,14 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour
 {
     GameObject mapRenderer;
+    Transform player;
     MapRender mapRender;
     int moveSpeed;
     void Start() {
 
         moveSpeed = 7;
+
+        player = GameObject.Find("Player").transform;
 
         mapRenderer = GameObject.Find("MapRenderer");
         mapRender = mapRenderer.GetComponent<MapRender>();
@@ -25,6 +28,8 @@ public class CameraScript : MonoBehaviour
         float yAvg = ySum / mapRender.mapManager.getCoordinates().Count;
         
         smoothMove(new Vector3(xAvg, yAvg, transform.position.z));
+
+        this.transform.LookAt(Vector3.Lerp(Vector3.zero, player.position, 0.1f), Vector3.up);
     }
 
     void smoothMove(Vector3 targetPosition) {

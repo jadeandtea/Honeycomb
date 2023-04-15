@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Flower
 {
+    MapSettings settings;
     //Used in MapRender to handle addressable flowers and associated Game Objects
-    Point mapCoordinate;
+    Point mapCoord;
     Sprite main;
-    float hexagonSize;
     const float ZLAYER = -0.1f;
-    MapRender.HexType type;
     Sprite[] spriteAry;
     SpriteRenderer spriteRenderer;
     GameObject host;
@@ -17,9 +16,9 @@ public class Flower
 
     public string key;
 
-    public Flower(GameObject host, string key, Point mapCoordinate, float hexagonSize, MapRender.HexType type) {
-        this.mapCoordinate = mapCoordinate;
-        this.hexagonSize = hexagonSize;
+    public Flower(MapSettings settings, GameObject host, string key, Point mapCoordinate) {
+        this.settings = settings;
+        this.mapCoord = mapCoordinate;
         this.host = host;
         this.key = key;
 
@@ -38,24 +37,41 @@ public class Flower
         if(handleToCheck.Status == AsyncOperationStatus.Succeeded)
         {
             spriteAry = handleToCheck.Result;
-            host.transform.position = new Vector3(mapCoordinate.x * 3 / 2f * hexagonSize, (mapCoordinate.x * Mathf.Sqrt(3) / 2f + mapCoordinate.y * Mathf.Sqrt(3)) * hexagonSize, ZLAYER);
+            host.transform.position = new Vector3(mapCoord.x * 3 / 2f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 2f + mapCoord.y * Mathf.Sqrt(3)) * settings.hexagonSize, ZLAYER);
 
             spriteRenderer.sprite = spriteAry[0];
         }
     }
 
-    public void update(float hexagonSize, MapRender.HexType type) {
-        this.hexagonSize = hexagonSize;
-        this.type = type;
-
-        if(type == MapRender.HexType.Flat) {
-            host.transform.position = new Vector3(mapCoordinate.x * 3 / 2f * hexagonSize, (mapCoordinate.x * Mathf.Sqrt(3) / 2f + mapCoordinate.y * Mathf.Sqrt(3)) * hexagonSize, ZLAYER);
-        } else if (type == MapRender.HexType.Pointy) {
-            host.transform.position = new Vector3(mapCoordinate.x * Mathf.Sqrt(3) * hexagonSize + mapCoordinate.y * Mathf.Sqrt(3) / 2 * hexagonSize, mapCoordinate.y * 3 / 2f * hexagonSize, ZLAYER);
+    public void update() {
+        if(settings.type == MapSettings.HexType.Flat) {
+            host.transform.position = new Vector3(mapCoord.x * 3 / 2f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 2f + mapCoord.y * Mathf.Sqrt(3)) * settings.hexagonSize, ZLAYER);
+        } else if (settings.type == MapSettings.HexType.Pointy) {
+            host.transform.position = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize + mapCoord.y * Mathf.Sqrt(3) / 2 * settings.hexagonSize, mapCoord.y * 3 / 2f * settings.hexagonSize, ZLAYER);
         }
     }
 
     void OnDestroy() {
         Addressables.Release(spriteHandle);
+    }
+
+
+    public override string ToString()
+    {
+        return mapCoord.ToString();
+    }
+
+    public bool Equals(Flower flower) {
+        return mapCoord.Equals(flower.mapCoord);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return Equals(obj as Flower);
+    }
+
+    public override int GetHashCode()
+    {
+        return mapCoord.GetHashCode();
     }
 }

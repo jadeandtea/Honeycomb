@@ -16,6 +16,9 @@ public class HexagonMesh {
         comes to it.
         */
 
+        MapSettings settings;
+        MapSettings.MeshType meshType;
+
         MeshRenderer meshRenderer;
         MeshFilter meshFilter;
         Mesh mesh;
@@ -29,31 +32,28 @@ public class HexagonMesh {
         Point mapCoord;
         float zLayer = 0;
 
-        float hexagonSizeMap;
-        float hexagonSizeRender;
-        float outlineSize;
-
         Vector3 targetPosition;
         int moveSpeed = 7;
 
-        float targetSize;
+        MapSettings.HexType type;
 
-        MapRender.HexType type;
+        bool isActive;
 
-        public HexagonMesh(GameObject gameObject, float hexagonSize, float outlineSize, MapRender.HexType type, Color color, Point mapCoord, float zLayer = 0) {
+        public HexagonMesh(MapSettings settings, GameObject gameObject, MapSettings.MeshType meshType, Point mapCoord, float zLayer = 0) {
             //Given the location of where the hex is to be placed, render 6 triangles to form
             //a hexagon centered around the given point.
 
+            this.settings = settings;
             this.gameObject = gameObject;
-            this.hexagonSizeMap = hexagonSize;
-            this.hexagonSizeRender = hexagonSize;
-            this.outlineSize = outlineSize;
+            this.meshType = meshType;
+            
             this.mapCoord = mapCoord;
-            this.type = type;
+            this.type = settings.type;
             this.zLayer = zLayer;
 
+            this.isActive = true;
+
             this.targetPosition = gameObject.transform.position;
-            this.targetSize = hexagonSize;
 
             meshFilter = gameObject.AddComponent<MeshFilter>();
             mesh = new Mesh();
@@ -61,8 +61,14 @@ public class HexagonMesh {
             recalculateVertices();
             normals = new Vector3[7]{-Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward};
             triangles = new int[18]{0, 1, 2,  0, 2, 3,  0, 3, 4,  0, 4, 5,  0, 5, 6,  0, 6, 1};
-            setColor(color);
-
+            if (meshType == MapSettings.MeshType.Tile) {
+                setColor(settings.tileOuterColor, settings.tileCenterColor, settings.centerColorWeight);
+            } else if (meshType == MapSettings.MeshType.Obs){
+                setColor(settings.obsOuterColor, settings.obsCenterColor, settings.centerColorWeight);
+            } else {
+                Debug.Log("MapSettings not initialized?");
+            }
+            
             mesh = recalculateMesh(mesh);
 
             meshFilter.mesh = mesh;
@@ -71,44 +77,43 @@ public class HexagonMesh {
             meshRenderer.material = new Material(Shader.Find("Particles/Standard Unlit"));
         }
 
-        public void updateHex(float hexagonSize, float outlineSize, MapRender.HexType type) {
-            
-            this.hexagonSizeMap = hexagonSize;
-            this.hexagonSizeRender = hexagonSize;
-            this.outlineSize = outlineSize;
-            this.type = type;
+        public void updateHex() {
+
+            this.type = settings.type;
             recalculateVertices();
 
-            if(type == MapRender.HexType.Flat) {
-                gameObject.transform.position = new Vector3(mapCoord.x * 3 / 4f * hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * hexagonSize, zLayer);
-            } else if (type == MapRender.HexType.Pointy) {
-                gameObject.transform.position = new Vector3(mapCoord.x * Mathf.Sqrt(3) * hexagonSize / 2 + mapCoord.y * Mathf.Sqrt(3) / 4 * hexagonSize, mapCoord.y * 3 / 4f * hexagonSize, zLayer);
+            if(type == MapSettings.HexType.Flat) {
+                targetPosition = new Vector3(mapCoord.x * 3 / 4f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * settings.hexagonSize, zLayer);
+            } else if (type == MapSettings.HexType.Pointy) {
+                targetPosition = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize / 2 + mapCoord.y * Mathf.Sqrt(3) / 4 * settings.hexagonSize, mapCoord.y * 3 / 4f * settings.hexagonSize, zLayer);
             }
+            smoothMove();
 
             mesh = recalculateMesh(mesh);
 
             meshFilter.mesh = mesh;
+            meshRenderer.enabled = isActive;
         }
 
-        public void updateHex(float hexagonSizeMap, float hexagonSizeRender, float outlineSize, MapRender.HexType type) {
+        public void setLocation(Point mapCoord) {
+            if(type == MapSettings.HexType.Flat) {
+                targetPosition = new Vector3(mapCoord.x * 3 / 4f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * settings.hexagonSize, zLayer);
+            } else if (type == MapSettings.HexType.Pointy) {
+                targetPosition = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize / 2 + mapCoord.y * Mathf.Sqrt(3) / 4 * settings.hexagonSize, mapCoord.y * 3 / 4f * settings.hexagonSize, zLayer);
+            }
+            gameObject.transform.position = targetPosition;
+        }
 
-            this.hexagonSizeMap = hexagonSizeMap;
-            this.hexagonSizeRender = hexagonSizeRender;
-            this.outlineSize = outlineSize;
-            this.type = type;
-            recalculateVertices();
+        public void setColor(Color mainColor, Color centerColor, float t) {
+            colors = new Color32[7]{Color.Lerp(mainColor, centerColor, t), mainColor, mainColor, mainColor, mainColor, mainColor, mainColor};
+        }
 
-            setTargetPos(mapCoord);
-            smoothMove();
-            
-            mesh = recalculateMesh(mesh);
-
-            meshFilter.mesh = mesh;
-        } 
-
-        public void setColor(Color color) {
-            color = Color32.Lerp(Color.yellow, color, 0.3f);
-            colors = new Color32[7]{Color32.Lerp(Color.yellow, color, 0.3f), color, color, color, color, color, color};
+        // Colliders are for the level editor
+        // On a mouse input, the engine sends a raycast straight from the camera, and it only hits a gameObject if 
+        // it has a collider of some sort
+        public void addCollider() {
+            MeshCollider collider = gameObject.AddComponent<MeshCollider>();
+            collider.sharedMesh = mesh;
         }
 
         void recalculateVertices() {
@@ -117,23 +122,29 @@ public class HexagonMesh {
             float posX = gameObject.transform.position.x;
             float posY = gameObject.transform.position.y;
 
-            if(type == MapRender.HexType.Flat) {
-                //Flat Top
+            float hexagonSizeRender = 0;
+            if (meshType == MapSettings.MeshType.Tile) {
+                hexagonSizeRender = settings.hexagonSize;
+            } else if (meshType == MapSettings.MeshType.Obs){
+                hexagonSizeRender = settings.hexagonSize / 2;
+            } else {
+                Debug.Log("MapSettings not initialized");
+            }
+
+            if(type == MapSettings.HexType.Flat) {
                 // The angles for each point from the origin to it are 0°, 60°, 120°, 180°, 240°, 300°
-                // The for loop looks weird but it works;
-                // It starts at Pi (which is 0°) and moves around counterclockwise
+                // The loop starts at Pi (which is 0°) and moves around counterclockwise
                 for (int i = -3; i < 3; i++) {
                     var angle_rad = -Mathf.PI / 3 * i;
-                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * outlineSize, zLayer);
+                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * settings.outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * settings.outlineSize, zLayer);
                 }
                 vertices[0] = gameObject.transform.position;
-            } else if (type == MapRender.HexType.Pointy) {
-                //Pointy Top
+            } else if (type == MapSettings.HexType.Pointy) {
                 // Only difference from the last is this starts at 30°, so + Pi/6
                 vertices = new Vector3[7];
                 for (int i = -3; i < 3; i++) {
                     var angle_rad = (-Mathf.PI / 3 * i) + Mathf.PI / 6;
-                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * outlineSize, zLayer);
+                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * settings.outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * settings.outlineSize, zLayer);
                 }
                 vertices[0] = gameObject.transform.position;
             }
@@ -163,27 +174,7 @@ public class HexagonMesh {
             }
         }
 
-        void smoothResize() {
-            float intermediateSize = Mathf.Lerp(hexagonSizeMap, targetSize, 0.5f);
-
-            if (intermediateSize != 0) {
-                hexagonSizeRender = intermediateSize;
-
-                if (intermediateSize < 0.001f) {
-                    hexagonSizeRender = targetSize;
-                }
-            }
-        }
-
-        void setTargetPos(Point coord) {
-            if(type == MapRender.HexType.Flat) {
-                targetPosition = new Vector3(coord.x * 3 / 4f * hexagonSizeMap, (coord.x * Mathf.Sqrt(3) / 4f + coord.y * Mathf.Sqrt(3) / 2) * hexagonSizeMap, zLayer);
-            } else if (type == MapRender.HexType.Pointy) {
-                targetPosition = new Vector3(coord.x * Mathf.Sqrt(3) * hexagonSizeMap / 2 + coord.y * Mathf.Sqrt(3) / 4 * hexagonSizeMap, coord.y * 3 / 4f * hexagonSizeMap, zLayer);
-            }
-        }
-
-        public Point getCoord() {
-            return mapCoord;
+        public void active(bool isActive) {
+            this.isActive = isActive;
         }
     }
