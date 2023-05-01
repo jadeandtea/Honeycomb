@@ -161,12 +161,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500887981}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.608206, y: -44.819847, z: 342.77014}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &634794850
 GameObject:
@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 634794853}
   - component: {fileID: 634794852}
   - component: {fileID: 634794851}
+  - component: {fileID: 634794854}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -250,8 +251,21 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &634794854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634794850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50c381fe05a754f0e9ae80e0444d54c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editMode: 1
 --- !u!1 &744301205
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +278,7 @@ GameObject:
   - component: {fileID: 744301208}
   - component: {fileID: 744301207}
   m_Layer: 0
-  m_Name: Bg
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,7 +347,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &869121866
 GameObject:
@@ -401,7 +415,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1165757449
 GameObject:
@@ -450,9 +464,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 329ee6143d1fc4711b61589bbc3dd23f, type: 2}
   mapPosition:
-    x: 0
-    y: 0
-  movementAmount:
     x: 0
     y: 0
   moveSpeed: 7
@@ -539,6 +550,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 329ee6143d1fc4711b61589bbc3dd23f, type: 2}
+  textManager: {fileID: 0}
+  editMode: 1
 --- !u!4 &2139832015
 Transform:
   m_ObjectHideFlags: 0

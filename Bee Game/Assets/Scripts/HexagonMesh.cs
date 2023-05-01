@@ -21,6 +21,7 @@ public class HexagonMesh {
 
         MeshRenderer meshRenderer;
         MeshFilter meshFilter;
+        MeshCollider collider;
         Mesh mesh;
 
         Vector3[] vertices;
@@ -58,6 +59,9 @@ public class HexagonMesh {
             meshFilter = gameObject.AddComponent<MeshFilter>();
             mesh = new Mesh();
 
+            collider = gameObject.AddComponent<MeshCollider>();
+            collider.sharedMesh = mesh;
+
             recalculateVertices();
             normals = new Vector3[7]{-Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward};
             triangles = new int[18]{0, 1, 2,  0, 2, 3,  0, 3, 4,  0, 4, 5,  0, 5, 6,  0, 6, 1};
@@ -92,10 +96,15 @@ public class HexagonMesh {
             mesh = recalculateMesh(mesh);
 
             meshFilter.mesh = mesh;
+            collider.sharedMesh = mesh;
             meshRenderer.enabled = isActive;
         }
 
-        public void setLocation(Point mapCoord) {
+        public void setTargetLocation(Point mapCoord) {
+            this.mapCoord = mapCoord;
+        }
+
+        public void setActiveLocation(Point mapCoord) {
             if(type == MapSettings.HexType.Flat) {
                 targetPosition = new Vector3(mapCoord.x * 3 / 4f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * settings.hexagonSize, zLayer);
             } else if (type == MapSettings.HexType.Pointy) {
@@ -111,10 +120,6 @@ public class HexagonMesh {
         // Colliders are for the level editor
         // On a mouse input, the engine sends a raycast straight from the camera, and it only hits a gameObject if 
         // it has a collider of some sort
-        public void addCollider() {
-            MeshCollider collider = gameObject.AddComponent<MeshCollider>();
-            collider.sharedMesh = mesh;
-        }
 
         void recalculateVertices() {
             vertices = new Vector3[7];

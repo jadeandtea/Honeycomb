@@ -16,16 +16,24 @@ public class Flower
 
     public string key;
 
-    public Flower(MapSettings settings, GameObject host, string key, Point mapCoordinate) {
+    public bool isActive;
+
+    public Flower(MapSettings settings, GameObject host, string key, Point mapCoordinate, bool editMode = false) {
         this.settings = settings;
         this.mapCoord = mapCoordinate;
         this.host = host;
         this.key = key;
 
+        this.isActive = !editMode;
+
         spriteAry = new Sprite[1];
         spriteRenderer = host.AddComponent<SpriteRenderer>();
 
         loadSprites();
+    }
+
+    public void Destroy() {
+        GameObject.Destroy(host);
     }
 
     void loadSprites() {
@@ -49,12 +57,13 @@ public class Flower
         } else if (settings.type == MapSettings.HexType.Pointy) {
             host.transform.position = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize + mapCoord.y * Mathf.Sqrt(3) / 2 * settings.hexagonSize, mapCoord.y * 3 / 2f * settings.hexagonSize, ZLAYER);
         }
+        spriteRenderer.enabled = isActive;
     }
 
     void OnDestroy() {
         Addressables.Release(spriteHandle);
     }
-
+    
 
     public override string ToString()
     {

@@ -5,7 +5,6 @@ public class playerMovement : MonoBehaviour
     public MapSettings settings;
     float hexagonSize;
     public Point mapPosition;
-    [SerializeField]
     Point movementAmount;
     MapRender mapRender;
     Vector3 targetPosition;
@@ -14,7 +13,9 @@ public class playerMovement : MonoBehaviour
     public int moveSpeed = 7;
     public float turnSpeed = 5f;
     private const float ZLAYER = -1.01f;
-    MapSettings.HexType type;
+
+    bool resetButtonDown = false;
+    float resetCounter = 0f;
 
     void Awake() {
         mapRender = GameObject.Find("MapRenderer").GetComponent<MapRender>();
@@ -31,14 +32,28 @@ public class playerMovement : MonoBehaviour
     void Update()
     {
         this.hexagonSize = settings.hexagonSize;
-        this.type = settings.type;
 
         if(Input.anyKeyDown) {
-            if(type == MapSettings.HexType.Flat) {
+            if(settings.type == MapSettings.HexType.Flat) {
                 movementFlat();
-            } else if (type == MapSettings.HexType.Pointy) {
+            } else if (settings.type == MapSettings.HexType.Pointy) {
                 movementPointy();
             }
+
+            resetButtonDown = (Input.GetKeyDown(KeyCode.R)) ? true : resetButtonDown = false;
+
+            mapRender.checkWin(mapPosition);
+        }
+
+        if(resetButtonDown) {
+            resetCounter += Time.deltaTime;
+        } else {
+            resetCounter = 0;
+        }
+
+        if (resetCounter > 3) {
+            mapRender.reloadLevel();
+            resetCounter = Mathf.NegativeInfinity;
         }
 
         targetPosition = calculateScreenPosition(mapPosition);
@@ -54,9 +69,9 @@ public class playerMovement : MonoBehaviour
         For some reason I have to double the position of the player so that it renders
         in the center of the hexagon; not sure why 
         */
-        if (type == MapSettings.HexType.Flat) {
+        if (settings.type == MapSettings.HexType.Flat) {
             return new Vector3(nextPosition.x * 3 / 2f * hexagonSize, (nextPosition.x * Mathf.Sqrt(3) / 2f + nextPosition.y * Mathf.Sqrt(3)) * hexagonSize, ZLAYER);
-        } else if (type == MapSettings.HexType.Pointy) {
+        } else if (settings.type == MapSettings.HexType.Pointy) {
             return new Vector3(nextPosition.x * Mathf.Sqrt(3) * hexagonSize + nextPosition.y * Mathf.Sqrt(3) / 2f * hexagonSize, nextPosition.y * 3 / 2f * hexagonSize, ZLAYER);
         }
         Debug.Log("playerMovement Error: Misdefined HexType");
@@ -78,7 +93,7 @@ public class playerMovement : MonoBehaviour
         // of the player by the vector
         // Check to see if the player would be moving outside of the map and make sure the player is actually moving before
         // adding the value to past locations
-        movementAmount = new Point();
+        movementAmount = new Point(0, 0);
         Point previousMapPosition = new Point(mapPosition);
 
         //TODO implement undo function
@@ -113,9 +128,13 @@ public class playerMovement : MonoBehaviour
 
                 //Check to see if movement would end up in an active obstacle.
                 //If so, move the obstacle and keep the player still.
-            if (mapRender.getObstacles().ContainsKey(mapPosition) && mapRender.getObstacles()[mapPosition].isActive) {
+            if (mapRender.getPushables().ContainsKey(mapPosition) && mapRender.getPushables()[mapPosition].isActive) {
                 mapRender.moveObstacle(mapPosition, movementAmount);
                 mapPosition.Sub(movementAmount);
+            }
+
+            else if (mapRender.getFlowers().ContainsKey(mapPosition)) {
+                mapRender.touchFlower(mapPosition);
             }
                 //Don't move the player if they are outside the map
             else if(!inMap(mapPosition)) {

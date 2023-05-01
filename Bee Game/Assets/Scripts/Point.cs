@@ -2,13 +2,14 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Point : IEquatable<Point>{
+public struct Point : IEquatable<Point>{
     //Simple Point class to hold coordinates for anything on the hexagon grid.
     public int x, y;
 
+    public static Point zero = new Point(0, 0);
+
     public Point(int x, int y) {this.x = x; this.y = y;}
     public Point(Point point) {this.x = point.x; this.y = point.y;}
-    public Point() {this.x = 0; this.y = 0;}
     public Point(string point) 
     // Write the string as "x,y" without any other characters
     // FIX Make the input string more flexible
@@ -34,7 +35,11 @@ public class Point : IEquatable<Point>{
 
     public override bool Equals(object obj)
     {
-        return Equals(obj as Point);
+        if (!(obj is Point))
+            return false;
+
+        Point point = (Point) obj;
+        return Equals(point);
     }
 
     public bool Equals(int x, int y) {

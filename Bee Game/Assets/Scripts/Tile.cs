@@ -18,7 +18,6 @@ public class Tile
     public Tile(MapSettings settings, Point mapCoord, Transform parent, bool editMode = false) {
         this.settings = settings;
         this.mapCoord = mapCoord;
-        this.isActive = true;
 
         int s = -mapCoord.x - mapCoord.y;
         host = new GameObject(mapCoord.x + "," + mapCoord.y + "," + s);
@@ -29,19 +28,26 @@ public class Tile
 
         mesh = new HexagonMesh(settings, host, MapSettings.MeshType.Tile, mapCoord, ZLAYER);
         mesh.setColor(settings.tileOuterColor, settings.tileCenterColor, settings.centerColorWeight);
-        mesh.setLocation(mapCoord);
+        mesh.setTargetLocation(mapCoord);
 
-        if (editMode) {
-            mesh.addCollider();
-            isActive = false;
-        }
+        this.isActive = !editMode;
 
         host.transform.SetParent(parent);
     }
 
+    public void Destroy() {
+        GameObject.Destroy(host);
+    }
 
-    public void updateTile(float hexagonSize, float outlineSize, MapSettings.HexType type) {
+    public void setActiveLocation(Point mapCoord) {
+        mesh.setActiveLocation(mapCoord);
+    }
+
+
+    public void updateTile(Point mapCoord) {
+        this.mapCoord = mapCoord;
         mesh.active(isActive);
+        mesh.setTargetLocation(mapCoord);
         mesh.updateHex();
     }
 

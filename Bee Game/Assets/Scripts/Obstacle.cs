@@ -14,12 +14,14 @@ public class Obstacle : /*HexagonMesh,*/ IEquatable<Obstacle>
     Point mapCoord;
 
     public bool isActive;
+    public bool isPushable;
 
-    public Obstacle() {}
-
-    public Obstacle(MapSettings settings, Point mapCoord, Transform parent) {
+    public Obstacle(MapSettings settings, Point mapCoord, Transform parent, bool isPushable = false, bool editMode = true) {
         this.settings = settings;
         this.mapCoord = mapCoord;
+        this.isPushable = isPushable;
+
+        this.isActive = !editMode;
 
         int s = -mapCoord.x - mapCoord.y;
         host = new GameObject("(" + mapCoord.x + ", " + mapCoord.y + ", " + s + ")");
@@ -27,21 +29,23 @@ public class Obstacle : /*HexagonMesh,*/ IEquatable<Obstacle>
 
         mesh = new HexagonMesh(settings, host, MapSettings.MeshType.Obs, mapCoord, ZLAYER);
         mesh.setColor(settings.obsOuterColor, settings.obsCenterColor, settings.centerColorWeight);
-        mesh.setLocation(mapCoord);
+        mesh.setTargetLocation(mapCoord);
 
         host.transform.SetParent(parent);
     }
 
-    public void push(Point dir){
-        mapCoord.Add(dir);
+    public void Destroy() {
+        GameObject.Destroy(host);
     }
 
     public Point getCoord() {
         return mapCoord;
     }
 
-    public void updateObs() {
+    public void updateObs(Point mapCoord) {
+        this.mapCoord = mapCoord;
         mesh.active(isActive);
+        mesh.setTargetLocation(mapCoord);
         mesh.updateHex();
     }
 
