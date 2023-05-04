@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Tile
 {
+    private const float ZLAYER = 0f;
     MapSettings settings;
-    const float ZLAYER = 0f;
 
     GameObject host;
 
@@ -16,6 +16,8 @@ public class Tile
     public bool isActive;
 
     public Tile(MapSettings settings, Point mapCoord, Transform parent, bool editMode = false) {
+        // A tile object consists of the hexagon mesh and the game object that holds the mesh.
+
         this.settings = settings;
         this.mapCoord = mapCoord;
 
@@ -23,6 +25,7 @@ public class Tile
         host = new GameObject(mapCoord.x + "," + mapCoord.y + "," + s);
         host.transform.position = Vector3.zero;
 
+        // The collider is used for the level creator system
         host.layer = 3;
         collider = new MeshCollider();
 
@@ -35,14 +38,10 @@ public class Tile
         host.transform.SetParent(parent);
     }
 
-    public void Destroy() {
-        GameObject.Destroy(host);
-    }
-
     public void setActiveLocation(Point mapCoord) {
+        // Instantly places tile at mapCoord
         mesh.setActiveLocation(mapCoord);
     }
-
 
     public void updateTile(Point mapCoord) {
         this.mapCoord = mapCoord;
@@ -55,28 +54,7 @@ public class Tile
         mesh.setColor(outer, center, t);
     }
 
-    public Point getPoint() {
-        return mapCoord;
-    }
-
-
-    public override string ToString()
-    {
-        return mapCoord.ToString();
-    }
-
-    public bool Equals(Tile tile)
-    {
-        return mapCoord.Equals(tile.getPoint());
-    }
-
-    public override bool Equals(object obj)
-    {
-        return Equals(obj as Tile);
-    }
-
-    public override int GetHashCode()
-    {
-        return mapCoord.GetHashCode();
+    public void Destroy() {
+        GameObject.Destroy(host);
     }
 }

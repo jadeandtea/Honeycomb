@@ -38,7 +38,7 @@
   <ItemGroup>
      <Compile Include="Assets/Scripts/Tile.cs" />
      <Compile Include="Assets/Scripts/Point.cs" />
-     <Compile Include="Assets/Scripts/playerMovement.cs" />
+     <Compile Include="Assets/Scripts/Player.cs" />
      <Compile Include="Assets/Scripts/CameraScript.cs" />
      <Compile Include="Assets/Scripts/HexagonMesh.cs" />
      <Compile Include="Assets/Scripts/MapRender.cs" />
@@ -48,6 +48,7 @@
      <Compile Include="Assets/Scripts/Flower.cs" />
      <Compile Include="Assets/Scripts/LevelManager.cs" />
      <Compile Include="Assets/Scripts/MapSettings.cs" />
+     <Compile Include="Assets/Scripts/RollingBackground.cs" />
      <Compile Include="Assets/Scripts/Level.cs" />
      <Compile Include="Assets/Scripts/MovementCache.cs" />
      <Compile Include="Assets/Scripts/LevelSelect.cs" />

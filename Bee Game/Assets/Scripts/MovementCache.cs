@@ -1,32 +1,19 @@
 using System.Collections.Generic;
 
-public class MovementCache 
+public struct MovementCache 
 {
-    Point playerLocation;
-    List<Obstacle> obstacleLocations;
-    List<Tile> tileLocations;
-    List<int> flowersTouched;
-
-    public MovementCache(Point player, List<Obstacle> obstacles, List<Tile> map, List<int> flowersTouched) {
-        this.playerLocation = player;
-        this.obstacleLocations = obstacles;
-        this.tileLocations = map;
-        this.flowersTouched = flowersTouched;
+    // Struct to help manage the undo system
+    public enum movedObject {
+        Player, Obstacle
     }
 
-    public Point getPlayerLocation() {
-        return playerLocation;
-    }
+    public movedObject mObject;
+    public Point previousPoint {get; set;}
+    public Point newPoint {get; set;}
 
-    public List<Obstacle> getObstacles() {
-        return obstacleLocations;
-    }
-
-    public List<Tile> getTiles() {
-        return tileLocations;
-    }
-
-    public List<int> getFlowers() {
-        return flowersTouched;
+    public MovementCache(Point pPoint, Point nPoint, movedObject obj) {
+        previousPoint = pPoint;
+        newPoint = nPoint;
+        mObject = obj;
     }
 }

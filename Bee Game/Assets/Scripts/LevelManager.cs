@@ -15,12 +15,13 @@ public class LevelManager : MonoBehaviour
         text.text = level.ToString();
 
         self = this.GetComponent<Button>();
-        // self.interactable = PlayerPrefs.GetInt("levelReached", 0) >= level - 1;
+
+        //Makes button greyed out if the player hasn't completed the previous level
+        self.interactable = PlayerPrefs.GetInt("levelReached", 0) >= level - 1;
     }
 
     public void onClick() {
         currentLevelNumber = level;
-        Level.loadLevel();
         SceneManager.LoadSceneAsync("Level Loader");
     }
 
@@ -28,5 +29,9 @@ public class LevelManager : MonoBehaviour
         if(currentLevelNumber > PlayerPrefs.GetInt("levelReached", 0)) {
             PlayerPrefs.SetInt("levelReached", currentLevelNumber);
         }
+    }
+
+    public void resetProgress() {
+        PlayerPrefs.SetInt("levelReached", 0);
     }
 }

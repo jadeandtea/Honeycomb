@@ -18,34 +18,28 @@ public class LevelSelect : MonoBehaviour
     enum screen {
         Main, LevelSelect, Settings, Level
     }
-    static screen currentScreen = 0;
+    static screen currentScreen = screen.Main;
 
     public void Start() {
         levelSelectText = levelSelectObject.GetComponentInChildren<TMP_Text>();
         settingsText = settingsObject.GetComponentInChildren<TMP_Text>();
         quitText = quitObject.GetComponentInChildren<TMP_Text>();
-        currentScreen = screen.Main;
         loadScene();
     }
-    
-    // TODO Make it so that a level completion brings the player directly to the level select screen
-    // public void Awake(){
-    //     DontDestroyOnLoad(gameObject);
-    // }
 
-    public void levelSelectScreen() {
+    public void levelSelectButton() {
         currentScreen = screen.LevelSelect;
         loadScene();
     }
 
-    public void settingsScreen() {
+    public void settingsButton() {
         currentScreen = screen.Settings;
         loadScene();
     }
 
-    public void mainMenuScreen() {
+    public void quitButton() {
         if(currentScreen == screen.Main) {
-            #if UNITY_EDITOR1
+            #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
             #endif
                 Application.Quit();
@@ -58,7 +52,16 @@ public class LevelSelect : MonoBehaviour
 
     private void loadScene() {
         switch (currentScreen) {
+            case screen.Main:
+                Title.SetActive(true);
+                levelSelectObject.SetActive(true);
+                settingsObject.SetActive(true);
+                quitObject.SetActive(true);
+                levelsHost.SetActive(false);
+                quitText.text = "Quit";
+                break;
             case screen.Settings:
+            // TODO Setup a settings screen to modify controls (?), change map orientation, color scheme, or other things idk what
                 Title.SetActive(false);
                 levelSelectObject.SetActive(false);
                 settingsObject.SetActive(false);

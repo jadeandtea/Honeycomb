@@ -382,8 +382,9 @@
 "Assets/Scripts/MapSettings.cs"
 "Assets/Scripts/MovementCache.cs"
 "Assets/Scripts/Obstacle.cs"
-"Assets/Scripts/playerMovement.cs"
+"Assets/Scripts/Player.cs"
 "Assets/Scripts/Point.cs"
+"Assets/Scripts/RollingBackground.cs"
 "Assets/Scripts/Tile.cs"
 -langversion:9.0
 

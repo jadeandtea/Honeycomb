@@ -17,8 +17,13 @@ public class  MapSettings : ScriptableObject {
 
     public Color tileOuterColor = new Color(204, 133, 0, 0);
     public Color tileCenterColor = Color.white;
-    public Color obsOuterColor = Color.black;
-    public Color obsCenterColor = new Color(153, 99, 0, 0);
+    public Color obsOuterColor = new Color(153, 99, 0, 0);
+    public Color obsCenterColor = Color.black;
+    public Color pushOuterColor = new Color(153, 99, 0, 0);
+    public Color pushCenterColor = Color.white;
     [Range(0,1)]
     public float centerColorWeight = 0.3f;
+
+    public int moveSpeed = 7;
+    public float turnSpeed = 5;
 }

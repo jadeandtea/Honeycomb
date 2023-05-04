@@ -10,16 +10,18 @@ public class MapManager
     Dictionary<Point, Obstacle> obstacles;
     Dictionary<Point, Obstacle> pushables;
     Dictionary<Point, Flower> flowers;
-    Dictionary<Point, bool> touchedFlowers;
+    Dictionary<Point, int> touchedFlowers;
     Stack<MovementCache> history;
-    LevelTextManager textManager;
+    Transform parent;
 
     bool editMode;
     
-    public MapManager(MapSettings settings, LevelTextManager textManager, bool editMode = false) {
+    public MapManager(MapSettings settings, Transform parent, bool editMode = false) {
+        // Manages all things regarding the map; where tiles, obstacles, pushables, and flowers are; keeping track
+        // of where the player has moved and how obstacles move; and checking if the player has won or not
         this.editMode = editMode;
         this.settings = settings;
-        this.textManager = textManager;
+        this.parent = parent;
 
         openCoordinates = new List<Point>();
 
@@ -28,12 +30,12 @@ public class MapManager
         pushables = new Dictionary<Point, Obstacle>();
         flowers = new Dictionary<Point, Flower>();
 
-        touchedFlowers = new Dictionary<Point, bool>();
+        touchedFlowers = new Dictionary<Point, int>();
 
         history = new Stack<MovementCache>();
     }
 
-    public void loadMap(int mapSize, Transform parent) {
+    public void loadMap(int mapSize) {
         //Creates a map of tiles centered on (0, 0) that extends equally in all directions by the given mapSize
         
         tiles = new Dictionary<Point, Tile>();
@@ -50,10 +52,10 @@ public class MapManager
         }
     }
 
-    public void loadMap(List<Point> levelMap, Transform parent) {
+    public void loadMap(List<Point> levelMap) {
         //Loads a map given a list of points
         if(editMode) {
-            loadMap(10, parent);
+            loadMap(10);
         } else {
             tiles = new Dictionary<Point, Tile>();
 
@@ -64,7 +66,7 @@ public class MapManager
         }
     }
 
-    public void loadObstacles(int mapSize, Transform parent) {
+    public void loadObstacles(int mapSize) {
         //Creates a map of tiles centered on (0, 0) that extends equally in all directions by the given mapSize
         
         obstacles = new Dictionary<Point, Obstacle>();
@@ -73,7 +75,7 @@ public class MapManager
             for (int y = -mapSize; y < mapSize + 1; y++) {
                 int s = -x - y;
                 if(Mathf.Abs(s) <= mapSize){
-                    Obstacle tempObsRef = new Obstacle(settings, new Point(x, y), parent, false, editMode);
+                    Obstacle tempObsRef = new Obstacle(settings, new Point(x, y), parent, Obstacle.obstacleType.Obstacle, editMode);
                     
                     obstacles[new Point(x, y)] = tempObsRef;
                 }
@@ -81,24 +83,24 @@ public class MapManager
         }
     }
 
-    public void loadObstacles(List<Point> obstacleList, Transform parent) {
+    public void loadObstacles(List<Point> obstacleList) {
         //Creates Obstacle Game Objects that cannot be pushed
 
         if(editMode) {
-            loadObstacles(10, parent);
+            loadObstacles(10);
         } else {
             obstacles = new Dictionary<Point, Obstacle>();
 
             foreach(Point coord in obstacleList) {
                 int s = -coord.x - coord.y;
-                Obstacle tempObsRef = new Obstacle(settings, coord, parent, false, editMode);
+                Obstacle tempObsRef = new Obstacle(settings, coord, parent, Obstacle.obstacleType.Obstacle, editMode);
 
                 obstacles[coord] = tempObsRef;
             }
         }
     }
 
-    public void loadPushables(int mapSize, Transform parent) {
+    public void loadPushables(int mapSize) {
         //Creates a map of tiles centered on (0, 0) that extends equally in all directions by the given mapSize
         
         pushables = new Dictionary<Point, Obstacle>();
@@ -107,7 +109,7 @@ public class MapManager
             for (int y = -mapSize; y < mapSize + 1; y++) {
                 int s = -x - y;
                 if(Mathf.Abs(s) <= mapSize){
-                    Obstacle tempObsRef = new Obstacle(settings, new Point(x, y), parent, true, editMode);
+                    Obstacle tempObsRef = new Obstacle(settings, new Point(x, y), parent, Obstacle.obstacleType.Pushable, editMode);
                     
                     pushables[new Point(x, y)] = tempObsRef;
                 }
@@ -115,24 +117,24 @@ public class MapManager
         }
     }
 
-    public void loadPushables(List<Point> pushableList, Transform parent) {
+    public void loadPushables(List<Point> pushableList) {
         //Creates Obstacle Game Objects that can be pushed
 
         if (editMode) {
-            loadPushables(10, parent);
+            loadPushables(10);
         } else {
             pushables = new Dictionary<Point, Obstacle>();
 
             foreach(Point coord in pushableList) {
                 int s = -coord.x - coord.y;
-                Obstacle tempObsRef = new Obstacle(settings, coord, parent, true, editMode);
+                Obstacle tempObsRef = new Obstacle(settings, coord, parent, Obstacle.obstacleType.Pushable, editMode);
 
                 pushables[coord] = tempObsRef;
             }
         }
     }
 
-    public void loadFlowers(int mapSize, string[] flowerSpriteList, Transform parent) {
+    public void loadFlowers(int mapSize, string[] flowerSpriteList) {
         //Creates a map of tiles centered on (0, 0) that extends equally in all directions by the given mapSize
         
         flowers = new Dictionary<Point, Flower>();
@@ -152,17 +154,17 @@ public class MapManager
 
                     tempFlowerRef.transform.SetParent(parent);
 
-                    touchedFlowers[new Point(x, y)] = false;
+                    touchedFlowers[new Point(x, y)] = 0;
                 }
             }
         }
     }
 
-    public void loadFlowers(List<Point> flowerList, string[] flowerSpriteList, Transform parent) {
+    public void loadFlowers(List<Point> flowerList, string[] flowerSpriteList) {
         //Creates Flower Game Objects
 
         if (editMode) {
-            loadFlowers(10, flowerSpriteList, parent);
+            loadFlowers(10, flowerSpriteList);
         } else {
 
             flowers = new Dictionary<Point, Flower>();
@@ -180,72 +182,152 @@ public class MapManager
 
                 tempFlowerRef.transform.SetParent(parent);
 
-                touchedFlowers[coord] = false;
+                touchedFlowers[coord] = 0;
             }
         }
     }
 
-    public void moveObstacle(Point point, Point movementDir, Transform parent) {
-        //TODO allow obstacles to push each other in a line
+    public void logCache(Point previousPoint, Point newPoint, MovementCache.movedObject movedObject) {
+        history.Push(new MovementCache(previousPoint, newPoint, movedObject));
+    }
 
-        // Add previous obstacle position to possible movement tiles,
-        // shift the hexagon's map coordinate, then remove the new position
-        // from possible movement tiles.
+    public void undoMove(){
+        MovementCache previousMove;
+        history.TryPop(out previousMove);
+        // Debug.Log("Undoing " + previousMove.mObject + " from " + previousMove.newPoint + " to " + previousMove.previousPoint);
+        if (previousMove.mObject == MovementCache.movedObject.Player) {
+            Player player = parent.gameObject.GetComponentInChildren<Player>();
+            if (flowers.ContainsKey(player.mapPosition)) {
+                undoTouchFlower(player.mapPosition);
+            }
+            player.mapPosition = previousMove.previousPoint;
+        } else if (previousMove.mObject == MovementCache.movedObject.Obstacle) {
+            try{
+                Obstacle obstacleRef = pushables[previousMove.newPoint];
+                if(obstacleRef.isActive) {
+                    pushables.Remove(previousMove.newPoint);
+                    pushables[previousMove.previousPoint] = obstacleRef;
+                } else {
+                    obstacleRef.isActive = true;
+                    pushables.Remove(previousMove.newPoint);
+                    pushables[previousMove.previousPoint] = obstacleRef;
+                    tiles[previousMove.newPoint].isActive = false;
+                }
+            } catch{
+                Obstacle obstacleRef = new Obstacle(settings, previousMove.newPoint, parent, Obstacle.obstacleType.Pushable, editMode);
+                pushables[previousMove.previousPoint] = obstacleRef;
+                tiles[previousMove.newPoint].isActive = false;
+            }
+        }
+    }
 
-        // Change the obstacle reference key and move the obstacle to the next point
+    public Point moveObstacle(Point point, Point movementDir) {
+        // Moving an pushable is not as easy as it seems! 
+        //
+        // First, get the pushable reference and set the point it will move to
+        // If the position that it wants to move to has an active obstacle or pushable,
+        // keep the point the pushable will move to the same (the pushable won't move)
+        //
+        // Set the pushable to move to the point, whether that be the new point or the same point
+        // as where it started. 
+        //
+        // If the point the pushable moves to is not a tile, set the tile to active (or create a new tile),
+        // then deactivate the pushable.
+        //
+        // Return the point the obstacle moves to store for undoing
+
         Obstacle pushRef = pushables[point];
+
+        Point finalLocation;
 
         pushables.Remove(point);
         point.Add(movementDir);
-        pushables[point] = pushRef;
 
-        if(!tiles.ContainsKey(point)) {
-            pushables[point].isActive = false;
-            try{
-                tiles[point].isActive = true;
-            } catch {
-                tiles[point] = new Tile(settings, point, parent, editMode);
-                tiles[point].setActiveLocation(point.Sub(movementDir));
-                updateCoordinates();
-            }
+        if(obstacles.ContainsKey(point) && obstacles[point].isActive) {
+            point.Sub(movementDir);
         }
-    }
+        if(pushables.ContainsKey(point) && pushables[point].isActive) {
+            point.Sub(movementDir);
+        }
+        if(flowers.ContainsKey(point) && flowers[point].isActive) {
+            point.Sub(movementDir);
+        }
+        pushables[point] = pushRef;
+        finalLocation = point;
 
-    //TODO make obstacles undoable
-    public void undoObstacleMove(Point point, Point dir, Transform parent) {
-        
+        if(tiles.ContainsKey(point)) {
+            if(!tiles[point].isActive) {
+                tiles[point].isActive = true;
+                pushables[point].isActive = false;
+                tiles[point].setActiveLocation(point.Sub(movementDir));
+            }
+        } else {
+            pushables[point].isActive = false;
+            tiles[point] = new Tile(settings, point, parent, editMode);
+            tiles[point].setActiveLocation(point.Sub(movementDir));
+            updateCoordinates();
+        }
+        return finalLocation;
     }
 
     public void touchFlower(Point point) {
-        touchedFlowers[point] = true;
+        touchedFlowers[point]++;
+    }
+
+    void undoTouchFlower(Point point) {
+        touchedFlowers[point]--;
     }
 
     public bool checkWin(Point playerPosition) {
-        return !touchedFlowers.ContainsValue(false) && playerPosition.Equals(0, 0);
+        return touchedFlowers.Count > 0 && !touchedFlowers.ContainsValue(0) && playerPosition.Equals(0, 0);
     }
 
     public void activateTile(Point point) {
-        tiles[point].isActive = true;
+        try{
+            tiles[point].isActive = true;
+        } catch {
+            tiles[point] = new Tile(settings, point, parent, editMode);
+        }
     }
 
     public void deactivateTile(Point point) {
-        tiles[point].isActive = false;
+        try{
+            tiles[point].isActive = false;
+        } catch {
+            tiles[point] = new Tile(settings, point, parent, editMode);
+        }
     }
     
     public void activateObstacle(Point point) {
-        obstacles[point].isActive = true;
+        try{
+            obstacles[point].isActive = true;
+        } catch {
+            tiles[point] = new Tile(settings, point, parent, editMode);
+        }
     }
 
     public void deactivateObstacle(Point point) {
-        obstacles[point].isActive = false;
+        try{
+            obstacles[point].isActive = false;
+        } catch {
+            tiles[point] = new Tile(settings, point, parent, editMode);
+        }
     }
     
     public void activateFlower(Point point) {
-        flowers[point].isActive = true;
+        try{
+            flowers[point].isActive = true;
+        } catch {
+            tiles[point] = new Tile(settings, point, parent, editMode);
+        }
     }
 
     public void deactivateFlower(Point point) {
-        flowers[point].isActive = false;
+        try{
+            flowers[point].isActive = false;
+        } catch {
+            tiles[point] = new Tile(settings, point, parent, editMode);
+        }
     }
 
     private void updateCoordinates(List<Point> coordinates) {
@@ -293,6 +375,9 @@ public class MapManager
             valuePair.Value.Destroy();
         }
         foreach(KeyValuePair<Point, Obstacle> valuePair in obstacles) {
+            valuePair.Value.Destroy();
+        }
+        foreach(KeyValuePair<Point, Obstacle> valuePair in pushables) {
             valuePair.Value.Destroy();
         }
         foreach(KeyValuePair<Point, Flower> valuePair in flowers) {

@@ -11,8 +11,8 @@ public struct Point : IEquatable<Point>{
     public Point(int x, int y) {this.x = x; this.y = y;}
     public Point(Point point) {this.x = point.x; this.y = point.y;}
     public Point(string point) 
-    // Write the string as "x,y" without any other characters
-    // FIX Make the input string more flexible
+    // Write the string as "x,y" without any other characters; formatted specifically for level creator
+    // TODO? Make the input string more flexible
     {
         string[] numbers = point.Split(',');
         int x = int.Parse(numbers[0]);
@@ -21,6 +21,7 @@ public struct Point : IEquatable<Point>{
         this.y = y;
     } 
 
+    // Basic math operations that directly change the value of the point
     public void Set(int x, int y) {this.x = x; this.y = y;}
     public Point Add(Point point) {this.x += point.x; this.y += point.y; return this;}
     public Point Add(int x, int y) {this.x += x; this.y += y; return this;}

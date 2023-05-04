@@ -8,16 +8,20 @@ public class MapRender : MonoBehaviour
 
     public MapManager mapManager;
     
-    public LevelTextManager textManager;
+    public LevelTextManager completeLevelText;
+    public LevelTextManager keybindText;
 
     public bool editMode = false;
 
-    void Start(){
+    void Awake(){
         reloadLevel();
     }
 
     void FixedUpdate() {  
         // Update and "Render" all hexagons
+        //
+        // TODO Potential slowdowns when on a large map (level editor)
+        // Find some way to only update tiles when they need to move
         foreach(KeyValuePair<Point, Tile> pair in mapManager.getTiles()) {
             Tile tile = pair.Value;
             Point mapCoord = pair.Key;
@@ -34,7 +38,7 @@ public class MapRender : MonoBehaviour
             Obstacle pushable = pair.Value;
             Point mapCoord = pair.Key;
             pushable.updateObs(mapCoord);
-            pushable.setColor(settings.obsOuterColor, settings.obsCenterColor, settings.centerColorWeight);
+            pushable.setColor(settings.pushOuterColor, settings.pushCenterColor, settings.centerColorWeight);
         }
         foreach(KeyValuePair<Point, Flower> pair in mapManager.getFlowers()) {
             Flower flower = pair.Value;
@@ -47,26 +51,39 @@ public class MapRender : MonoBehaviour
         if(mapManager != null) {
             mapManager.Destroy();
         }
+        if(keybindText != null) {
+            keybindText.FadeTextToFullAlpha();
+        }
         
         Level.loadLevel();
 
-        mapManager = new MapManager(settings, textManager, editMode);
+        mapManager = new MapManager(settings, this.transform, editMode);
         
-        mapManager.loadMap(Level.map, this.transform);
-
-        mapManager.loadObstacles(Level.obstacles, this.transform);
-
-        mapManager.loadPushables(Level.pushables, this.transform);
+        mapManager.loadMap(Level.map);
+        mapManager.loadObstacles(Level.obstacles);
+        mapManager.loadPushables(Level.pushables);
 
         flowerSpriteList = new string[3]{"Assets/FlowerSpriteList/Black-eyed Susan.png", "Assets/FlowerSpriteList/Daisy.png", "Assets/FlowerSpriteList/Rose.png"};
-        mapManager.loadFlowers(Level.flowers, flowerSpriteList, this.transform);
+        mapManager.loadFlowers(Level.flowers, flowerSpriteList);
 
         mapManager.updateCoordinates();
     }
 
-    public void moveObstacle(Point point, Point movementDir) {
-        mapManager.moveObstacle(point, movementDir, this.transform);
+    public Point moveObstacle(Point point, Point movementDir) {
+        Point temp = mapManager.moveObstacle(point, movementDir);
         mapManager.updateCoordinates();
+        return temp;
+    }
+
+    public void logCache(Point newPoint, Point previousPoint, MovementCache.movedObject obj) {
+        mapManager.logCache(newPoint, previousPoint, obj);
+        if(keybindText != null) {
+            keybindText.FadeTextToZeroAlpha();
+        }
+    }
+
+    public void undo() {
+        mapManager.undoMove();
     }
 
     public void touchFlower(Point point) {
@@ -75,9 +92,10 @@ public class MapRender : MonoBehaviour
     
     public void checkWin(Point playerPosition) {
         if (mapManager.checkWin(playerPosition)) {
-            if(textManager != null) {
-                textManager.animate();
+            if(completeLevelText != null) {
+                completeLevelText.animate();
             }
+            LevelManager.levelComplete();
         }
     }
 
