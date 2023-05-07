@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if(Input.anyKeyDown) {
+        if(Input.anyKeyDown && !EscMenu.inMenu) {
             if(settings.type == MapSettings.HexType.Flat) {
                 movementFlat();
             } else if (settings.type == MapSettings.HexType.Pointy) {
@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
             resetButtonDown = (Input.GetKeyDown(KeyCode.R)) ? true : resetButtonDown = false;
 
             mapRender.checkWin(mapPosition);
+
+            mapRender.updateMeshes();
         }
 
         if(resetButtonDown) {

@@ -87,13 +87,13 @@ public class HexagonMesh {
             recalculateVertices();
 
             if(type == MapSettings.HexType.Flat) {
-                targetPosition = new Vector3(mapCoord.x * 3 / 4f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * settings.hexagonSize, zLayer);
+                targetPosition = new Vector3(mapCoord.x * 3 / 2f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 2f + mapCoord.y * Mathf.Sqrt(3)) * settings.hexagonSize, zLayer);
             } else if (type == MapSettings.HexType.Pointy) {
-                targetPosition = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize / 2 + mapCoord.y * Mathf.Sqrt(3) / 4 * settings.hexagonSize, mapCoord.y * 3 / 4f * settings.hexagonSize, zLayer);
+                targetPosition = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize + mapCoord.y * Mathf.Sqrt(3) / 2 * settings.hexagonSize, mapCoord.y * 3 / 2f * settings.hexagonSize, zLayer);
             }
             smoothMove();
 
-            mesh = recalculateMesh(mesh);
+            // mesh = recalculateMesh(mesh);
 
             meshFilter.mesh = mesh;
             collider.sharedMesh = mesh;
@@ -106,9 +106,9 @@ public class HexagonMesh {
 
         public void setActiveLocation(Point mapCoord) {
             if(type == MapSettings.HexType.Flat) {
-                targetPosition = new Vector3(mapCoord.x * 3 / 4f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 4f + mapCoord.y * Mathf.Sqrt(3) / 2) * settings.hexagonSize, zLayer);
+                targetPosition = new Vector3(mapCoord.x * 3 / 2f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 2f + mapCoord.y * Mathf.Sqrt(3)) * settings.hexagonSize, zLayer);
             } else if (type == MapSettings.HexType.Pointy) {
-                targetPosition = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize / 2 + mapCoord.y * Mathf.Sqrt(3) / 4 * settings.hexagonSize, mapCoord.y * 3 / 4f * settings.hexagonSize, zLayer);
+                targetPosition = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize + mapCoord.y * Mathf.Sqrt(3) / 2 * settings.hexagonSize, mapCoord.y * 3 / 2f * settings.hexagonSize, zLayer);
             }
             gameObject.transform.position = targetPosition;
         }
@@ -124,9 +124,6 @@ public class HexagonMesh {
         void recalculateVertices() {
             vertices = new Vector3[7];
 
-            float posX = gameObject.transform.position.x;
-            float posY = gameObject.transform.position.y;
-
             float hexagonSizeRender = 0;
             if (meshType == MapSettings.MeshType.Tile) {
                 hexagonSizeRender = settings.hexagonSize;
@@ -141,18 +138,22 @@ public class HexagonMesh {
                 // The loop starts at Pi (which is 0°) and moves around counterclockwise
                 for (int i = -3; i < 3; i++) {
                     var angle_rad = -Mathf.PI / 3 * i;
-                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * settings.outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * settings.outlineSize, zLayer);
+                    vertices[i + 4] = new Vector3(hexagonSizeRender * Mathf.Cos(angle_rad) * settings.outlineSize, hexagonSizeRender * Mathf.Sin(angle_rad) * settings.outlineSize, zLayer);
                 }
-                vertices[0] = gameObject.transform.position;
+                vertices[0] = Vector3.zero;
             } else if (type == MapSettings.HexType.Pointy) {
                 // Only difference from the last is this starts at 30°, so + Pi/6
                 vertices = new Vector3[7];
                 for (int i = -3; i < 3; i++) {
                     var angle_rad = (-Mathf.PI / 3 * i) + Mathf.PI / 6;
-                    vertices[i + 4] = new Vector3(posX + hexagonSizeRender * Mathf.Cos(angle_rad) * settings.outlineSize, posY + hexagonSizeRender * Mathf.Sin(angle_rad) * settings.outlineSize, zLayer);
+                    vertices[i + 4] = new Vector3(hexagonSizeRender * Mathf.Cos(angle_rad) * settings.outlineSize, hexagonSizeRender * Mathf.Sin(angle_rad) * settings.outlineSize, zLayer);
                 }
-                vertices[0] = gameObject.transform.position;
+                vertices[0] = Vector3.zero;
             }
+        }
+
+        public void recalculateMesh() {
+            mesh = recalculateMesh(mesh);
         }
 
         Mesh recalculateMesh(Mesh mesh) {

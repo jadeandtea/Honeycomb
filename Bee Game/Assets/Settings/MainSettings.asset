@@ -22,3 +22,5 @@ MonoBehaviour:
   pushOuterColor: {r: 0.75, g: 0.48749998, b: 0, a: 1}
   pushCenterColor: {r: 1, g: 1, b: 1, a: 0}
   centerColorWeight: 0.3
+  moveSpeed: 7
+  turnSpeed: 5

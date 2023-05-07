@@ -13,7 +13,7 @@ public class MapRender : MonoBehaviour
 
     public bool editMode = false;
 
-    void Awake(){
+    void Start(){
         reloadLevel();
     }
 
@@ -77,7 +77,7 @@ public class MapRender : MonoBehaviour
 
     public void logCache(Point newPoint, Point previousPoint, MovementCache.movedObject obj) {
         mapManager.logCache(newPoint, previousPoint, obj);
-        if(keybindText != null) {
+        if(keybindText != null && LevelManager.currentLevelNumber != 1) {
             keybindText.FadeTextToZeroAlpha();
         }
     }
@@ -96,6 +96,31 @@ public class MapRender : MonoBehaviour
                 completeLevelText.animate();
             }
             LevelManager.levelComplete();
+        }
+    }
+
+    public void updateMeshes() {
+        foreach(KeyValuePair<Point, Tile> pair in mapManager.getTiles()) {
+            Tile tile = pair.Value;
+            Point mapCoord = pair.Key;
+            tile.updateMesh();
+            tile.setColor(settings.tileOuterColor, settings.tileCenterColor, settings.centerColorWeight);
+        }
+        foreach(KeyValuePair<Point, Obstacle> pair in mapManager.getObstacles()) {
+            Obstacle obstacle = pair.Value;
+            Point mapCoord = pair.Key;
+            obstacle.updateMesh();
+            obstacle.setColor(settings.obsOuterColor, settings.obsCenterColor, settings.centerColorWeight);
+        }
+        foreach(KeyValuePair<Point, Obstacle> pair in mapManager.getPushables()) {
+            Obstacle pushable = pair.Value;
+            Point mapCoord = pair.Key;
+            pushable.updateMesh();
+            pushable.setColor(settings.pushOuterColor, settings.pushCenterColor, settings.centerColorWeight);
+        }
+        foreach(KeyValuePair<Point, Flower> pair in mapManager.getFlowers()) {
+            Flower flower = pair.Value;
+            flower.update();
         }
     }
 

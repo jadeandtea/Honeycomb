@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 329ee6143d1fc4711b61589bbc3dd23f, type: 2}
+  level: 1
+  loadLevel: 1
 --- !u!4 &500887983
 Transform:
   m_ObjectHideFlags: 0
@@ -265,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c381fe05a754f0e9ae80e0444d54c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editMode: 1
+  fixedCamera: 0
 --- !u!1 &744301205
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,8 +468,6 @@ MonoBehaviour:
   mapPosition:
     x: 0
     y: 0
-  moveSpeed: 7
-  turnSpeed: 5
 --- !u!212 &1165757452
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -550,7 +550,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 329ee6143d1fc4711b61589bbc3dd23f, type: 2}
-  textManager: {fileID: 0}
+  completeLevelText: {fileID: 0}
+  keybindText: {fileID: 0}
   editMode: 1
 --- !u!4 &2139832015
 Transform:

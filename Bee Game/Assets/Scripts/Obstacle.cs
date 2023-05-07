@@ -18,7 +18,7 @@ public class Obstacle
 
     public bool isActive;
 
-    public Obstacle(MapSettings settings, Point mapCoord, Transform parent, obstacleType type, bool editMode = true) {
+    public Obstacle(MapSettings settings, Point mapCoord, Transform parent, obstacleType type, bool editMode = false) {
         this.settings = settings;
         this.mapCoord = mapCoord;
 
@@ -36,6 +36,8 @@ public class Obstacle
             mesh.setColor(settings.obsOuterColor, settings.obsCenterColor, settings.centerColorWeight);
         }
 
+        mesh.recalculateMesh();
+
         mesh.setTargetLocation(mapCoord);
 
         host.transform.SetParent(parent);
@@ -48,8 +50,12 @@ public class Obstacle
     public void updateObs(Point mapCoord) {
         this.mapCoord = mapCoord;
         mesh.active(isActive);
-        mesh.setTargetLocation(mapCoord);
         mesh.updateHex();
+        mesh.setTargetLocation(mapCoord);
+    }
+
+    public void updateMesh() {
+        mesh.recalculateMesh();
     }
 
     public void setColor(Color outer, Color center, float t){

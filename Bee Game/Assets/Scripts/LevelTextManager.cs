@@ -25,7 +25,7 @@ public class LevelTextManager : MonoBehaviour
     }
 
     public void animate() {
-        Debug.Log("Level " + LevelManager.currentLevelNumber + 1 + " complete");
+        Debug.Log("Level " + LevelManager.currentLevelNumber + " complete");
         if(!isRunning) {
             StartCoroutine("animateText");
         }

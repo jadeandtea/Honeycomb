@@ -56,6 +56,9 @@ public class MapManager
         //Loads a map given a list of points
         if(editMode) {
             loadMap(10);
+            foreach(Point coord in levelMap) {
+                tiles[coord].isActive = true;
+            }
         } else {
             tiles = new Dictionary<Point, Tile>();
 
@@ -88,6 +91,9 @@ public class MapManager
 
         if(editMode) {
             loadObstacles(10);
+            foreach(Point coord in obstacleList) {
+                obstacles[coord].isActive = true;
+            }
         } else {
             obstacles = new Dictionary<Point, Obstacle>();
 
@@ -122,6 +128,9 @@ public class MapManager
 
         if (editMode) {
             loadPushables(10);
+            foreach(Point coord in pushableList) {
+                pushables[coord].isActive = true;
+            }
         } else {
             pushables = new Dictionary<Point, Obstacle>();
 
@@ -165,6 +174,10 @@ public class MapManager
 
         if (editMode) {
             loadFlowers(10, flowerSpriteList);
+            foreach(Point coord in flowerList) {
+                flowers[coord].isActive = true;
+                touchedFlowers[coord] = 0;
+            }
         } else {
 
             flowers = new Dictionary<Point, Flower>();
@@ -302,7 +315,7 @@ public class MapManager
         try{
             obstacles[point].isActive = true;
         } catch {
-            tiles[point] = new Tile(settings, point, parent, editMode);
+            obstacles[point] = new Obstacle(settings, point, parent, Obstacle.obstacleType.Obstacle, editMode);
         }
     }
 
@@ -310,7 +323,23 @@ public class MapManager
         try{
             obstacles[point].isActive = false;
         } catch {
-            tiles[point] = new Tile(settings, point, parent, editMode);
+            obstacles[point] = new Obstacle(settings, point, parent, Obstacle.obstacleType.Obstacle, editMode);
+        }
+    }
+
+    public void activatePushable(Point point) {
+        try{
+            pushables[point].isActive = true;
+        } catch {
+            obstacles[point] = new Obstacle(settings, point, parent, Obstacle.obstacleType.Pushable, editMode);
+        }
+    }
+
+    public void deactivatePushable(Point point) {
+        try{
+            pushables[point].isActive = false;
+        } catch {
+            pushables[point] = new Obstacle(settings, point, parent, Obstacle.obstacleType.Pushable, editMode);
         }
     }
     
@@ -318,7 +347,7 @@ public class MapManager
         try{
             flowers[point].isActive = true;
         } catch {
-            tiles[point] = new Tile(settings, point, parent, editMode);
+            
         }
     }
 
@@ -326,7 +355,7 @@ public class MapManager
         try{
             flowers[point].isActive = false;
         } catch {
-            tiles[point] = new Tile(settings, point, parent, editMode);
+            
         }
     }
 

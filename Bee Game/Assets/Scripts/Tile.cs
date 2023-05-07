@@ -50,6 +50,10 @@ public class Tile
         mesh.updateHex();
     }
 
+    public void updateMesh() {
+        mesh.recalculateMesh();
+    }
+
     public void setColor(Color outer, Color center, float t) {
         mesh.setColor(outer, center, t);
     }

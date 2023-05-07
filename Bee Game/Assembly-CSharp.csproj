@@ -43,6 +43,7 @@
      <Compile Include="Assets/Scripts/HexagonMesh.cs" />
      <Compile Include="Assets/Scripts/MapRender.cs" />
      <Compile Include="Assets/Scripts/LevelTextManager.cs" />
+     <Compile Include="Assets/Scripts/EscMenu.cs" />
      <Compile Include="Assets/Scripts/LevelCreatorManager.cs" />
      <Compile Include="Assets/Scripts/Obstacle.cs" />
      <Compile Include="Assets/Scripts/Flower.cs" />

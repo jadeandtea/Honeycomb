@@ -71,10 +71,10 @@ public class Level {
                 flowers = lvl10_Flower;
                 break;
             default:
-                map = lvl1_Tile;
-                obstacles = lvl1_Obs;
-                pushables = lvl1_Push;
-                flowers = lvl1_Flower;
+                map = new List<Point>{new Point(0, 0)};
+                obstacles = new List<Point>();
+                pushables = new List<Point>();
+                flowers = new List<Point>();
                 break;
         }
     }
@@ -216,29 +216,44 @@ public class Level {
     };
 
     static List<Point> lvl6_Tile = new List<Point>{
-
+        new Point(-2, 1), 
+        new Point(0, -1), 
+        new Point(0, 0), 
+        new Point(-2, 2), 
+        new Point(-1, 2), 
+        new Point(-1, 0), 
+        new Point(1, -1), 
+        new Point(5, -4), 
+        new Point(5, -2), 
+        new Point(0, 1), 
+        new Point(0, 2), 
+        new Point(1, 1), 
+        new Point(1, 0), 
+        new Point(2, 0), 
+        new Point(2, -1), 
     };
     static List<Point> lvl6_Obs = new List<Point>{
-
+        new Point(0, 2),
     };
     static List<Point> lvl6_Push = new List<Point>{
-
+        new Point(0, 1), 
+        new Point(1, 1), 
+        new Point(1, 0), 
+        new Point(2, 0), 
+        new Point(2, -1), 
     };
     static List<Point> lvl6_Flower = new List<Point>{
-
+        new Point(5, -4), 
+        new Point(5, -2), 
     };
 
     static List<Point> lvl7_Tile = new List<Point>{
-
     };
     static List<Point> lvl7_Obs = new List<Point>{
-
     };
     static List<Point> lvl7_Push = new List<Point>{
-
     };
     static List<Point> lvl7_Flower = new List<Point>{
-
     };
 
     static List<Point> lvl8_Tile = new List<Point>{

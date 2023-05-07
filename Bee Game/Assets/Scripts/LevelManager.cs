@@ -11,13 +11,13 @@ public class LevelManager : MonoBehaviour
     public TMP_Text text;
     Button self;
     
-    public void Start() {
+    public void Awake() {
         text.text = level.ToString();
 
         self = this.GetComponent<Button>();
 
         //Makes button greyed out if the player hasn't completed the previous level
-        self.interactable = PlayerPrefs.GetInt("levelReached", 0) >= level - 1;
+        self.interactable = PlayerPrefs.GetInt("levelReached", 1) >= level - 1;
     }
 
     public void onClick() {
