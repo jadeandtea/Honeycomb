@@ -1836,7 +1836,6 @@ MonoBehaviour:
   completeLevelText: {fileID: 693875249}
   keybindText: {fileID: 849383674}
   editMode: 0
-  level: 1
 --- !u!4 &2099623795
 Transform:
   m_ObjectHideFlags: 0

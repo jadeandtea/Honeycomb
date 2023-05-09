@@ -6,7 +6,7 @@ using System.IO;
 public class LevelCreatorManager : MonoBehaviour
 {
     public MapSettings settings;
-    Dictionary<Point, TileType> pointList;
+    static Dictionary<Point, TileType> pointList;
     int layerMask;
 
     public int level = 1;
@@ -178,5 +178,9 @@ public class LevelCreatorManager : MonoBehaviour
         writer.Close();
 
         Debug.Log("Saved Level.");
+    }
+
+    public static void reset() {
+        pointList = new Dictionary<Point, TileType>();
     }
 }

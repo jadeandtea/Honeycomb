@@ -265,6 +265,9 @@ public class MapManager
         if(flowers.ContainsKey(point) && flowers[point].isActive) {
             point.Sub(movementDir);
         }
+        if(point.Equals(Point.zero)) {
+            point.Sub(movementDir);
+        }
         pushables[point] = pushRef;
         finalLocation = point;
 

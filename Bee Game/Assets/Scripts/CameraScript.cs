@@ -63,8 +63,10 @@ public class CameraScript : MonoBehaviour
     }
 
     void handleZoom() {
-        if (Input.mouseScrollDelta.y > 0 || Input.mouseScrollDelta.y < 0) {
+        if (Input.mouseScrollDelta.y > 0 && Camera.main.transform.position.z < -2) {
             transform.position += new Vector3(0, 0, Input.mouseScrollDelta.y * Time.deltaTime * 10f);
-        } 
+        } else if (Input.mouseScrollDelta.y < 0 && Camera.main.transform.position.z > -23) {
+            transform.position += new Vector3(0, 0, Input.mouseScrollDelta.y * Time.deltaTime * 10f);
+        }
     }
 }

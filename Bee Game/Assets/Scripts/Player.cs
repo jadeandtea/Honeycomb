@@ -27,14 +27,14 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        resetButtonDown = (Input.GetKey(KeyCode.R)) ? true : resetButtonDown = false;
+        
         if(Input.anyKeyDown && !EscMenu.inMenu) {
             if(settings.type == MapSettings.HexType.Flat) {
                 movementFlat();
             } else if (settings.type == MapSettings.HexType.Pointy) {
                 movementPointy();
             }
-
-            resetButtonDown = (Input.GetKeyDown(KeyCode.R)) ? true : resetButtonDown = false;
 
             mapRender.checkWin(mapPosition);
 
@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
 
         if (resetCounter > 1) {
             mapRender.reloadLevel();
+            LevelCreatorManager.reset();
             this.mapPosition = new Point(0 ,0);
             resetCounter = Mathf.NegativeInfinity;
         }

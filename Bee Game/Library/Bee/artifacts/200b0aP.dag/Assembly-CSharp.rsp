@@ -312,6 +312,7 @@
 -r:"Library/Bee/artifacts/200b0aP.dag/Unity.VisualScripting.State.ref.dll"
 -r:"Library/Bee/artifacts/200b0aP.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/CameraScript.cs"
+"Assets/Scripts/EscMenu.cs"
 "Assets/Scripts/Flower.cs"
 "Assets/Scripts/HexagonMesh.cs"
 "Assets/Scripts/Level.cs"
