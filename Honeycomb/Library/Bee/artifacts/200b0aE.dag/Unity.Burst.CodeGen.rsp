@@ -112,6 +112,7 @@
 -define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
+-r:"/Applications/Unity/Hub/Editor/2021.3.22f1/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll"
 -r:"/Applications/Unity/Hub/Editor/2021.3.22f1/Unity.app/Contents/Managed/Unity.CompilationPipeline.Common.dll"
 -r:"/Applications/Unity/Hub/Editor/2021.3.22f1/Unity.app/Contents/Managed/UnityEditor.Graphs.dll"
 -r:"/Applications/Unity/Hub/Editor/2021.3.22f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.CoreModule.dll"
@@ -323,11 +324,11 @@
 -r:"/Applications/Unity/Hub/Editor/2021.3.22f1/Unity.app/Contents/UnityReferenceAssemblies/unity-4.8-api/System.Transactions.dll"
 -r:"/Applications/Unity/Hub/Editor/2021.3.22f1/Unity.app/Contents/UnityReferenceAssemblies/unity-4.8-api/System.Xml.dll"
 -r:"/Applications/Unity/Hub/Editor/2021.3.22f1/Unity.app/Contents/UnityReferenceAssemblies/unity-4.8-api/System.Xml.Linq.dll"
--r:"/Users/jadentian/Unity/Bee Game/Bee Game/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll"
--r:"/Users/jadentian/Unity/Bee Game/Bee Game/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.Mdb.dll"
--r:"/Users/jadentian/Unity/Bee Game/Bee Game/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.Pdb.dll"
--r:"/Users/jadentian/Unity/Bee Game/Bee Game/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll"
--r:"/Users/jadentian/Unity/Bee Game/Bee Game/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll"
+-r:"/Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll"
+-r:"/Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.Mdb.dll"
+-r:"/Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.Pdb.dll"
+-r:"/Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll"
+-r:"/Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll"
 -r:"Library/Bee/artifacts/200b0aE.dag/Unity.Burst.ref.dll"
 "Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/AssemblyResolver.cs"
 "Library/PackageCache/com.unity.burst@1.8.2/Unity.Burst.CodeGen/BurstILPostProcessor.cs"
