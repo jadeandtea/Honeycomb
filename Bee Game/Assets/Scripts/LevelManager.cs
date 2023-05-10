@@ -31,7 +31,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void resetProgress() {
+    public static void resetProgress() {
         PlayerPrefs.SetInt("levelReached", 0);
     }
 }

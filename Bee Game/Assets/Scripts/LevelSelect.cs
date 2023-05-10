@@ -33,8 +33,12 @@ public class LevelSelect : MonoBehaviour
     }
 
     public void settingsButton() {
-        currentScreen = screen.Settings;
-        loadScene();
+        if(currentScreen == screen.Settings) {
+            LevelManager.resetProgress();
+        } else {
+            currentScreen = screen.Settings;
+            loadScene();
+        }
     }
 
     public void quitButton() {
@@ -58,14 +62,16 @@ public class LevelSelect : MonoBehaviour
                 settingsObject.SetActive(true);
                 quitObject.SetActive(true);
                 levelsHost.SetActive(false);
+                settingsText.text = "Settings";
                 quitText.text = "Quit";
                 break;
             case screen.Settings:
             // TODO Setup a settings screen to modify controls (?), change map orientation, color scheme, or other things idk what
                 Title.SetActive(false);
                 levelSelectObject.SetActive(false);
-                settingsObject.SetActive(false);
+                settingsObject.SetActive(true);
                 levelsHost.SetActive(false);
+                settingsText.text = "Reset Progress";
                 quitText.text = "Main Menu";
                 break;
             case screen.LevelSelect:
@@ -88,6 +94,8 @@ public class LevelSelect : MonoBehaviour
                 settingsObject.SetActive(true);
                 quitObject.SetActive(true);
                 levelsHost.SetActive(false);
+                settingsText.text = "Settings";
+                quitText.text = "Quit";
                 break;
         }
     }
