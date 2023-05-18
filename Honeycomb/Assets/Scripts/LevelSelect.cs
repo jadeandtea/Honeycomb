@@ -16,7 +16,7 @@ public class LevelSelect : MonoBehaviour
     
 
     enum screen {
-        Main, LevelSelect, Settings, Level
+        Main, LevelSelect, Settings
     }
     static screen currentScreen = screen.Main;
 
@@ -79,13 +79,6 @@ public class LevelSelect : MonoBehaviour
                 levelSelectObject.SetActive(false);
                 settingsObject.SetActive(false);
                 levelsHost.SetActive(true);
-                quitText.text = "Main Menu";
-                break;
-            case screen.Level:
-                Title.SetActive(false);
-                levelSelectObject.SetActive(false);
-                settingsObject.SetActive(false);
-                levelsHost.SetActive(false);
                 quitText.text = "Main Menu";
                 break;
             default:

@@ -6,7 +6,6 @@ public class CameraScript : MonoBehaviour
     Transform player;
     MapRender mapRender;
     int moveSpeed;
-    float playerWeight;
 
     public bool fixedCamera = false;
     void Start() {

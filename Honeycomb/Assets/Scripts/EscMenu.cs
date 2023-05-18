@@ -18,7 +18,7 @@ public class EscMenu : MonoBehaviour
     }
     static screen currentScreen = screen.Game;
 
-    public void Start() {
+    void Start() {
         currentScreen = screen.Game;
         returnText = returnObject.GetComponentInChildren<TMP_Text>();
         settingsText = settingsObject.GetComponentInChildren<TMP_Text>();
@@ -26,13 +26,13 @@ public class EscMenu : MonoBehaviour
         loadScene();
     }
 
-    public void Update() {
+    void Update() {
         if(Input.GetKeyDown(KeyCode.Escape)) {
-            returnObjectButton();
+            returnButton();
         }
     }
 
-    public void returnObjectButton() {
+    void returnButton() {
         if(currentScreen == screen.Game) {
             currentScreen = screen.Esc;
         } else{
@@ -41,13 +41,13 @@ public class EscMenu : MonoBehaviour
         loadScene();
     }
 
-    public void settingsButton() {
+    void settingsButton() {
         currentScreen = screen.Settings;
         menuText.text = "Back";
         loadScene();
     }
 
-    public void menuButton() {
+    void menuButton() {
         if(currentScreen == screen.Esc) {
             SceneManager.LoadSceneAsync("Main Menu");
         }
@@ -58,7 +58,7 @@ public class EscMenu : MonoBehaviour
         loadScene();
     }
 
-    private void loadScene() {
+    void loadScene() {
         switch (currentScreen) {
             case(screen.Game):
                 returnObject.SetActive(false);

@@ -1835,6 +1835,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 1e25ab0311c54499c81e2ad4836b5b9b, type: 2}
   completeLevelText: {fileID: 693875249}
   keybindText: {fileID: 849383674}
+  texture: {fileID: 0}
   editMode: 0
 --- !u!4 &2099623795
 Transform:

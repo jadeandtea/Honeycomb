@@ -11,6 +11,9 @@ public class MapRender : MonoBehaviour
     public LevelTextManager completeLevelText;
     public LevelTextManager keybindText;
 
+    [SerializeField]
+    public Texture texture;
+
     public bool editMode = false;
 
     void Start(){
@@ -70,7 +73,7 @@ public class MapRender : MonoBehaviour
     }
 
     public Point moveObstacle(Point point, Point movementDir) {
-        Point temp = mapManager.moveObstacle(point, movementDir);
+        Point temp = mapManager.movePushable(point, movementDir);
         mapManager.updateCoordinates();
         return temp;
     }
@@ -104,6 +107,7 @@ public class MapRender : MonoBehaviour
             Tile tile = pair.Value;
             Point mapCoord = pair.Key;
             tile.updateMesh();
+            tile.setTileMesh(texture);
             tile.setColor(settings.tileOuterColor, settings.tileCenterColor, settings.centerColorWeight);
         }
         foreach(KeyValuePair<Point, Obstacle> pair in mapManager.getObstacles()) {
@@ -142,5 +146,9 @@ public class MapRender : MonoBehaviour
 
     public Dictionary<Point, Flower> getFlowers() {
         return mapManager.getFlowers();
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class Level {
+public static class Level {
     public static List<Point> map;
     public static List<Point> obstacles;
     public static List<Point> flowers;

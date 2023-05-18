@@ -26,6 +26,7 @@ public class HexagonMesh {
 
         Vector3[] vertices;
         Vector3[] normals;
+        Vector2[] uvs;
         Color32[] colors;
         int[] triangles;
 
@@ -65,6 +66,7 @@ public class HexagonMesh {
             recalculateVertices();
             normals = new Vector3[7]{-Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward, -Vector3.forward};
             triangles = new int[18]{0, 1, 2,  0, 2, 3,  0, 3, 4,  0, 4, 5,  0, 5, 6,  0, 6, 1};
+            uvs = new Vector2[7] {new Vector2(0.5f, 0.5f), new Vector2(1, 0.5f), new Vector2(0.75f, 1), new Vector2(0.25f, 1), new Vector2(0, 0.5f), new Vector2(0.25f, 0), new Vector2(0.75f, 1)};
             if (meshType == MapSettings.MeshType.Tile) {
                 setColor(settings.tileOuterColor, settings.tileCenterColor, settings.centerColorWeight);
             } else if (meshType == MapSettings.MeshType.Obs){
@@ -117,9 +119,17 @@ public class HexagonMesh {
             colors = new Color32[7]{Color.Lerp(mainColor, centerColor, t), mainColor, mainColor, mainColor, mainColor, mainColor, mainColor};
         }
 
+        public void setTileMesh(Texture texture) {
+            meshRenderer.material.SetTexture("_BaseMap", texture);
+        }
+
         // Colliders are for the level editor
         // On a mouse input, the engine sends a raycast straight from the camera, and it only hits a gameObject if 
         // it has a collider of some sort
+
+        public void recalculateMesh() {
+            mesh = recalculateMesh(mesh);
+        }
 
         void recalculateVertices() {
             vertices = new Vector3[7];
@@ -152,17 +162,14 @@ public class HexagonMesh {
             }
         }
 
-        public void recalculateMesh() {
-            mesh = recalculateMesh(mesh);
-        }
-
         Mesh recalculateMesh(Mesh mesh) {
             mesh.Clear();
             
             mesh.vertices = vertices;
             mesh.normals = normals;
             mesh.triangles = triangles;
-            mesh.colors32 = colors;
+            // mesh.colors32 = colors;
+            mesh.uv = uvs;
             mesh.RecalculateNormals();
 
             return mesh;

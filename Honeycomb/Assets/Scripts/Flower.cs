@@ -32,16 +32,12 @@ public class Flower
         loadSprites();
     }
 
-    public void Destroy() {
-        GameObject.Destroy(host);
-    }
-
-    void loadSprites() {
+    private void loadSprites() {
         spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(key);
         spriteHandle.Completed += LoadSpritesWhenReady;
     }
 
-    void LoadSpritesWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck) { 
+    private void LoadSpritesWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck) { 
         if(handleToCheck.Status == AsyncOperationStatus.Succeeded)
         {
             spriteAry = handleToCheck.Result;
@@ -60,7 +56,11 @@ public class Flower
         spriteRenderer.enabled = isActive;
     }
 
-    void OnDestroy() {
+    public void Destroy() {
+        GameObject.Destroy(host);
+    }
+
+    public void OnDestroy() {
         Addressables.Release(spriteHandle);
     }
     

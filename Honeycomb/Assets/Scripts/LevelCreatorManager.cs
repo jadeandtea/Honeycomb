@@ -26,21 +26,6 @@ public class LevelCreatorManager : MonoBehaviour
         loadPoints(Level.map, Level.obstacles, Level.pushables, Level.flowers);
     }
 
-    void loadPoints(List<Point> Tiles, List<Point> Obstacles, List<Point> Pushables, List<Point> Flowers) {
-        foreach(Point point in Tiles) {
-            pointList[point] = TileType.Tile;
-        }
-        foreach(Point point in Obstacles) {
-            pointList[point] = TileType.Obstacle;
-        }
-        foreach(Point point in Pushables) {
-            pointList[point] = TileType.Pushable;
-        }
-        foreach(Point point in Flowers) {
-            pointList[point] = TileType.Flower;
-        }
-    }
-
     void Update()
     {
         // 0 is leftMouseButton, 1 is rightMouseButton
@@ -76,6 +61,21 @@ public class LevelCreatorManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I)) {
             saveLayout();
+        }
+    }
+
+    void loadPoints(List<Point> Tiles, List<Point> Obstacles, List<Point> Pushables, List<Point> Flowers) {
+        foreach(Point point in Tiles) {
+            pointList[point] = TileType.Tile;
+        }
+        foreach(Point point in Obstacles) {
+            pointList[point] = TileType.Obstacle;
+        }
+        foreach(Point point in Pushables) {
+            pointList[point] = TileType.Pushable;
+        }
+        foreach(Point point in Flowers) {
+            pointList[point] = TileType.Flower;
         }
     }
 

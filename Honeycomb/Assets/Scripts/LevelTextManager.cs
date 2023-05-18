@@ -11,11 +11,6 @@ public class LevelTextManager : MonoBehaviour
     bool isRunning = false;
     bool isFading = false;
 
-    private void changeText(string text)
-    {
-        textHolder.text = text;
-    }
-
     public void hideText() {
         textHolder.enabled = false;
     }
@@ -25,7 +20,6 @@ public class LevelTextManager : MonoBehaviour
     }
 
     public void animate() {
-        Debug.Log("Level " + LevelManager.currentLevelNumber + " complete");
         if(!isRunning) {
             StartCoroutine("animateText");
         }
@@ -44,6 +38,7 @@ public class LevelTextManager : MonoBehaviour
     }
 
     IEnumerator animateText() {
+        Debug.Log("Level " + LevelManager.currentLevelNumber + " complete");
         isRunning = true;
         showText();
         float i;

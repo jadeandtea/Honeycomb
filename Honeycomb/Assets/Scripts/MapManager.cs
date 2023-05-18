@@ -44,7 +44,7 @@ public class MapManager
             for (int y = -mapSize; y < mapSize + 1; y++) {
                 int s = -x - y;
                 if(Mathf.Abs(s) <= mapSize){
-                    Tile tempTileRef = new Tile(settings, new Point(x, y), parent, editMode);
+                    Tile tempTileRef = new Tile(settings, new Point(x, y), parent, false, editMode);
                     
                     tiles[new Point(x, y)] = tempTileRef;
                 }
@@ -234,7 +234,7 @@ public class MapManager
         }
     }
 
-    public Point moveObstacle(Point point, Point movementDir) {
+    public Point movePushable(Point point, Point movementDir) {
         // Moving an pushable is not as easy as it seems! 
         //
         // First, get the pushable reference and set the point it will move to
@@ -259,13 +259,13 @@ public class MapManager
         if(obstacles.ContainsKey(point) && obstacles[point].isActive) {
             point.Sub(movementDir);
         }
-        if(pushables.ContainsKey(point) && pushables[point].isActive) {
+        else if(pushables.ContainsKey(point) && pushables[point].isActive) {
             point.Sub(movementDir);
         }
-        if(flowers.ContainsKey(point) && flowers[point].isActive) {
+        else if(flowers.ContainsKey(point) && flowers[point].isActive) {
             point.Sub(movementDir);
         }
-        if(point.Equals(Point.zero)) {
+        else if(point.Equals(Point.zero)) {
             point.Sub(movementDir);
         }
         pushables[point] = pushRef;
@@ -279,7 +279,7 @@ public class MapManager
             }
         } else {
             pushables[point].isActive = false;
-            tiles[point] = new Tile(settings, point, parent, editMode);
+            tiles[point] = new Tile(settings, point, parent, false, editMode);
             tiles[point].setActiveLocation(point.Sub(movementDir));
             updateCoordinates();
         }
@@ -302,7 +302,7 @@ public class MapManager
         try{
             tiles[point].isActive = true;
         } catch {
-            tiles[point] = new Tile(settings, point, parent, editMode);
+            tiles[point] = new Tile(settings, point, parent, false, editMode);
         }
     }
 
@@ -310,7 +310,8 @@ public class MapManager
         try{
             tiles[point].isActive = false;
         } catch {
-            tiles[point] = new Tile(settings, point, parent, editMode);
+            tiles[point] = new Tile(settings, point, parent, false, editMode);
+            tiles[point].isActive = false;
         }
     }
     
@@ -327,6 +328,7 @@ public class MapManager
             obstacles[point].isActive = false;
         } catch {
             obstacles[point] = new Obstacle(settings, point, parent, Obstacle.obstacleType.Obstacle, editMode);
+            obstacles[point].isActive = false;
         }
     }
 
@@ -343,6 +345,7 @@ public class MapManager
             pushables[point].isActive = false;
         } catch {
             pushables[point] = new Obstacle(settings, point, parent, Obstacle.obstacleType.Pushable, editMode);
+            pushables[point].isActive = false;
         }
     }
     
@@ -362,10 +365,6 @@ public class MapManager
         }
     }
 
-    private void updateCoordinates(List<Point> coordinates) {
-        openCoordinates = coordinates;
-    }
-
     public void updateCoordinates() {
         List<Point> tempCoordinates = new List<Point>();
         foreach(KeyValuePair<Point, Tile> valuePair in tiles) {
@@ -379,7 +378,7 @@ public class MapManager
                 tempCoordinates.Remove(point);
             }
         }
-        updateCoordinates(tempCoordinates);
+        openCoordinates = tempCoordinates;
     }
 
     public List<Point> getCoordinates() {

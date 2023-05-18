@@ -14,12 +14,14 @@ public class Tile
     Point mapCoord;
 
     public bool isActive;
+    public bool isWeak;
 
-    public Tile(MapSettings settings, Point mapCoord, Transform parent, bool editMode = false) {
+    public Tile(MapSettings settings, Point mapCoord, Transform parent, bool weak = false, bool editMode = false) {
         // A tile object consists of the hexagon mesh and the game object that holds the mesh.
 
         this.settings = settings;
         this.mapCoord = mapCoord;
+        this.isWeak = weak;
 
         int s = -mapCoord.x - mapCoord.y;
         host = new GameObject(mapCoord.x + "," + mapCoord.y + "," + s);
@@ -52,6 +54,10 @@ public class Tile
 
     public void updateMesh() {
         mesh.recalculateMesh();
+    }
+
+    public void setTileMesh(Texture texture) {
+        mesh.setTileMesh(texture);
     }
 
     public void setColor(Color outer, Color center, float t) {
