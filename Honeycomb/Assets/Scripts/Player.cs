@@ -5,17 +5,17 @@ public class Player : MonoBehaviour
     public MapSettings settings;
     public Point mapPosition;
     Point movementAmount;
-    MapRender mapRender;
+    MapParent mapRender;
     Vector3 targetPosition;
     Vector3 targetAngle;
 
-    private const float ZLAYER = -1.01f;
+    private const float ZLAYER = -0.21f;
 
     bool resetButtonDown = false;
     float resetCounter = 0f;
 
-    void Awake() {
-        mapRender = GameObject.Find("MapRenderer").GetComponent<MapRender>();
+    public void Awake() {
+        mapRender = GameObject.Find("MapRenderer").GetComponent<MapParent>();
 
         //Player starts at (0,0), regardless of the level
         mapPosition = new Point(0, 0);
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         targetAngle = Vector3.zero;
     }
 
-    void Update()
+    public void Update()
     {
         resetButtonDown = (Input.GetKey(KeyCode.R)) ? true : resetButtonDown = false;
         
@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
                 // If so, move the obstacle and keep the player still.
                 // If the obstacle cannot move, don't save the movement
             if (mapRender.getPushables().ContainsKey(mapPosition) && mapRender.getPushables()[mapPosition].isActive) {
-                Point temp = mapRender.moveObstacle(mapPosition, movementAmount);
+                Point temp = mapRender.movePushable(mapPosition, movementAmount);
                 // Debug.Log("Obstacle moved from " + mapPosition + " to " + temp);
                 if (!temp.Equals(mapPosition))
                     mapRender.logCache(mapPosition, temp, MovementCache.movedObject.Obstacle);
@@ -148,9 +148,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    void undoMove() {
-        mapRender.undo();
-    }
     // Pretty much the same as movementFlat, just different vector directions and different keycodes
     void movementPointy() {
         /*  Logic for moving around the grid using qweasd and rotating player
@@ -202,7 +199,7 @@ public class Player : MonoBehaviour
                 // If so, move the obstacle and keep the player still.
                 // If the obstacle cannot move, don't save the movement
             if (mapRender.getPushables().ContainsKey(mapPosition) && mapRender.getPushables()[mapPosition].isActive) {
-                Point temp = mapRender.moveObstacle(mapPosition, movementAmount);
+                Point temp = mapRender.movePushable(mapPosition, movementAmount);
                 // Debug.Log("Obstacle moved from " + mapPosition + " to " + temp);
                 if (!temp.Equals(mapPosition))
                     mapRender.logCache(mapPosition, temp, MovementCache.movedObject.Obstacle);
@@ -220,6 +217,10 @@ public class Player : MonoBehaviour
                 mapRender.logCache(mapPosition.Sub(movementAmount), mapPosition.Add(movementAmount), MovementCache.movedObject.Player);
             }
         }
+    }
+
+    void undoMove() {
+        mapRender.undo();
     }
 
     void smoothMove() {

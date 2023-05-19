@@ -168,7 +168,7 @@ public class HexagonMesh {
             mesh.vertices = vertices;
             mesh.normals = normals;
             mesh.triangles = triangles;
-            // mesh.colors32 = colors;
+            mesh.colors32 = colors;
             mesh.uv = uvs;
             mesh.RecalculateNormals();
 

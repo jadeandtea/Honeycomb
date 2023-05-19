@@ -380,7 +380,7 @@
 "Assets/Scripts/LevelSelect.cs"
 "Assets/Scripts/LevelTextManager.cs"
 "Assets/Scripts/MapManager.cs"
-"Assets/Scripts/MapRender.cs"
+"Assets/Scripts/MapParent.cs"
 "Assets/Scripts/MapSettings.cs"
 "Assets/Scripts/MovementCache.cs"
 "Assets/Scripts/Obstacle.cs"

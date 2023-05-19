@@ -107,32 +107,87 @@ public static class Level {
         new Point(0, 3)
     };
     
+
     static List<Point> lvl2_Tile = new List<Point>{
         new Point(0, 0), 
-        new Point(0, 1), 
-        new Point(0, -1), 
-        new Point(3, 0), 
-        new Point(-3, 0), 
-        new Point(1, 0), 
-        new Point(-1, 0), 
-        new Point(1, 1), 
-        new Point(-1, -1), 
+        new Point(4, -4), 
+        new Point(1, -1), 
+        new Point(5, -5), 
+        new Point(6, -5), 
+        new Point(6, -4), 
+        new Point(4, 1), 
+        new Point(3, -1), 
+        new Point(5, 1), 
+        new Point(5, -4), 
+        new Point(3, -2), 
+        new Point(4, -1), 
+        new Point(2, -1), 
+        new Point(2, 0), 
+        new Point(6, 0), 
+        new Point(5, 0), 
+        new Point(4, 2), 
+        new Point(5, 2), 
+        new Point(6, 1), 
+        new Point(5, -3), 
+        new Point(2, -2), 
+        new Point(3, 0),
     };
     static List<Point> lvl2_Obs = new List<Point>{
-        new Point(1, 0), 
-        new Point(-1, 0),  
+        new Point(5, -4), 
+        new Point(3, -2), 
+        new Point(4, -1), 
+        new Point(2, -1), 
+        new Point(2, 0), 
+        new Point(6, 0), 
+        new Point(5, 0), 
+        new Point(4, 2), 
+        new Point(5, 2), 
+        new Point(6, 1),
     };
     static List<Point> lvl2_Push = new List<Point>{
-        new Point(1, 1), 
-        new Point(-1, -1),
+        new Point(5, -3), 
+        new Point(2, -2), 
+        new Point(3, 0),  
     };
     static List<Point> lvl2_Flower = new List<Point>{
-        new Point(3, 0), 
-        new Point(-3, 0), 
+        new Point(3, -1), 
+        new Point(5, 1),  
     };
 
 
     static List<Point> lvl3_Tile = new List<Point>{
+        new Point(0, 0), 
+        new Point(-1, 1), 
+        new Point(0, -1), 
+        new Point(-2, 1), 
+        new Point(0, 1), 
+        new Point(3, -1), 
+        new Point(2, -1), 
+        new Point(2, -2), 
+        new Point(-2, 3), 
+        new Point(4, -2), 
+        new Point(1, -1), 
+        new Point(3, -2), 
+        new Point(2, 0), 
+        new Point(-1, 0), 
+        new Point(1, 0), 
+    };
+    static List<Point> lvl3_Obs = new List<Point>{
+        new Point(1, -1), 
+        new Point(3, -2), 
+        new Point(2, 0),
+    };
+    static List<Point> lvl3_Push = new List<Point>{
+        new Point(-1, 0), 
+        new Point(1, 0), 
+    };
+    static List<Point> lvl3_Flower = new List<Point>{
+        new Point(-2, 3), 
+        new Point(4, -2),  
+    };
+
+
+    static List<Point> lvl4_Tile = new List<Point>{
         new Point(0, 0), 
         new Point(0, 1), 
         new Point(-1, 1), 
@@ -142,19 +197,40 @@ public static class Level {
         new Point(-1, 0), 
         new Point(0, -1), 
     };
-    static List<Point> lvl3_Obs = new List<Point>{
+    static List<Point> lvl4_Obs = new List<Point>{
     };
-    static List<Point> lvl3_Push = new List<Point>{
+    static List<Point> lvl4_Push = new List<Point>{
         new Point(1, 0), 
         new Point(-1, 0), 
         new Point(0, -1)
     };
-    static List<Point> lvl3_Flower = new List<Point>{
+    static List<Point> lvl4_Flower = new List<Point>{
         new Point(4, -3)
     };
 
 
-    static List<Point> lvl4_Tile = new List<Point>{
+    static List<Point> lvl5_Tile = new List<Point>{
+        new Point(0, 0), 
+        new Point(0, 1), 
+        new Point(-1, 1), 
+        new Point(1, -1), 
+        new Point(0, 3), 
+        new Point(1, 0), 
+        new Point(-1, 0), 
+        new Point(0, -1), 
+    };
+    static List<Point> lvl5_Obs = new List<Point>{ 
+    };
+    static List<Point> lvl5_Push = new List<Point>{
+        new Point(1, 0), 
+        new Point(-1, 0), 
+        new Point(0, -1), 
+    };
+    static List<Point> lvl5_Flower = new List<Point>{
+        new Point(0, 3), 
+    };
+
+    static List<Point> lvl6_Tile = new List<Point>{
         new Point(0, 0), 
         new Point(7, -4), 
         new Point(0, 1), 
@@ -170,9 +246,9 @@ public static class Level {
         new Point(2, -1), 
         new Point(1, -2),
     };
-    static List<Point> lvl4_Obs = new List<Point>{
+    static List<Point> lvl6_Obs = new List<Point>{
     };
-    static List<Point> lvl4_Push = new List<Point>{
+    static List<Point> lvl6_Push = new List<Point>{
         new Point(0, 1), 
         new Point(-1, 1), 
         new Point(-1, 0), 
@@ -186,12 +262,12 @@ public static class Level {
         new Point(2, -1), 
         new Point(1, -2), 
     };
-    static List<Point> lvl4_Flower = new List<Point>{
+    static List<Point> lvl6_Flower = new List<Point>{
         new Point(7, -4), 
     };
 
 
-    static List<Point> lvl5_Tile = new List<Point>{
+    static List<Point> lvl7_Tile = new List<Point>{
         new Point(0, 0), 
         new Point(-1, 1), 
         new Point(-2, 0), 
@@ -203,20 +279,20 @@ public static class Level {
         new Point(-3, 1), 
         new Point(-1, 2),
     };
-    static List<Point> lvl5_Obs = new List<Point>{
+    static List<Point> lvl7_Obs = new List<Point>{
         
     };
-    static List<Point> lvl5_Push = new List<Point>{
+    static List<Point> lvl7_Push = new List<Point>{
         new Point(-2, 1), 
         new Point(-3, 1), 
         new Point(-1, 2), 
     };
-    static List<Point> lvl5_Flower = new List<Point>{
-        new Point(-3, 4), 
+    static List<Point> lvl7_Flower = new List<Point>{
+        new Point(-3, 4),
         new Point(-1, 3), 
     };
 
-    static List<Point> lvl6_Tile = new List<Point>{
+    static List<Point> lvl8_Tile = new List<Point>{
         new Point(0, 0), 
         new Point(-2, 2), 
         new Point(0, 1), 
@@ -233,110 +309,96 @@ public static class Level {
         new Point(1, 2), 
         new Point(2, 1),  
     };
-    static List<Point> lvl6_Obs = new List<Point>{
+    static List<Point> lvl8_Obs = new List<Point>{
         new Point(0, 3), 
     };
-    static List<Point> lvl6_Push = new List<Point>{
+    static List<Point> lvl8_Push = new List<Point>{
         new Point(0, 2), 
         new Point(1, 1), 
         new Point(2, 0), 
         new Point(1, 2), 
         new Point(2, 1), 
     };
-    static List<Point> lvl6_Flower = new List<Point>{
+    static List<Point> lvl8_Flower = new List<Point>{
         new Point(5, 0), 
         new Point(5, -3), 
     };
 
-    static List<Point> lvl7_Tile = new List<Point>{
-        new Point(0, 0), 
-        new Point(-2, 2), 
-        new Point(-3, 3), 
-        new Point(2, -2), 
-        new Point(3, -3), 
-        new Point(-2, 0), 
-        new Point(-3, 0), 
-        new Point(2, 0), 
-        new Point(3, 0), 
-        new Point(-4, 2), 
-        new Point(4, -2), 
-        new Point(0, 1), 
-        new Point(0, -1), 
-        new Point(-1, 1), 
-        new Point(1, -1), 
-        new Point(-1, 0), 
-        new Point(1, 0),
-    };
-    static List<Point> lvl7_Obs = new List<Point>{
-    };
-    static List<Point> lvl7_Push = new List<Point>{
-        new Point(0, 1), 
-        new Point(0, -1), 
-        new Point(-1, 1), 
-        new Point(1, -1), 
-        new Point(-1, 0), 
-        new Point(1, 0),
-    };
-    static List<Point> lvl7_Flower = new List<Point>{
-        new Point(-4, 2), 
-        new Point(4, -2),
-    };
-
-    static List<Point> lvl8_Tile = new List<Point>{
-        new Point(0, 0), 
-        new Point(1, 0), 
-        new Point(-1, 2), 
-        new Point(0, 4), 
-        new Point(-3, 4), 
-        new Point(0, 3), 
-        new Point(2, 0), 
-        new Point(-2, 3), 
-        new Point(-1, 1), 
-        new Point(0, 1), 
-        new Point(1, 1), 
-        new Point(0, 2), 
-        new Point(-2, 2),
-    };
-    static List<Point> lvl8_Obs = new List<Point>{
-        new Point(0, 3), 
-        new Point(2, 0), 
-        new Point(-2, 3), 
-    };
-    static List<Point> lvl8_Push = new List<Point>{
-        new Point(-1, 1), 
-        new Point(0, 1), 
-        new Point(1, 1), 
-        new Point(0, 2), 
-        new Point(-2, 2),
-    };
-    static List<Point> lvl8_Flower = new List<Point>{
-        new Point(0, 4), 
-        new Point(-3, 4),
-    };
-
     static List<Point> lvl9_Tile = new List<Point>{
-
+        new Point(0, 0), 
+        new Point(-1, 2), 
+        new Point(1, 1), 
+        new Point(1, -1), 
+        new Point(2, -1), 
+        new Point(0, -1), 
+        new Point(-1, 0), 
+        new Point(-2, 1), 
+        new Point(-2, 2), 
+        new Point(2, 0), 
+        new Point(0, 5), 
+        new Point(-1, 5), 
+        new Point(1, 4), 
+        new Point(0, 3), 
+        new Point(-1, 1), 
+        new Point(1, 0), 
+        new Point(0, 1), 
+        new Point(0, 2), 
     };
     static List<Point> lvl9_Obs = new List<Point>{
-
+        new Point(-1, 5), 
+        new Point(1, 4), 
+        new Point(0, 3), 
     };
     static List<Point> lvl9_Push = new List<Point>{
-
+        new Point(-1, 1), 
+        new Point(1, 0), 
+        new Point(0, 1), 
+        new Point(0, 2), 
     };
     static List<Point> lvl9_Flower = new List<Point>{
-
+        new Point(0, 5), 
     };
 
     static List<Point> lvl10_Tile = new List<Point>{
-
+        new Point(0, 0), 
+        new Point(1, 1), 
+        new Point(0, 2), 
+        new Point(0, 1), 
+        new Point(1, 2), 
+        new Point(-1, 3), 
+        new Point(3, 1), 
+        new Point(3, 2), 
+        new Point(4, 1), 
+        new Point(3, 0), 
+        new Point(4, -1), 
+        new Point(4, 0), 
+        new Point(0, 4), 
+        new Point(-2, 5), 
+        new Point(-4, 2), 
+        new Point(3, -1), 
+        new Point(1, 0), 
+        new Point(1, 3), 
+        new Point(-2, 2), 
+        new Point(-1, 2), 
+        new Point(2, 1), 
+        new Point(2, 2), 
+        new Point(2, 0), 
     };
     static List<Point> lvl10_Obs = new List<Point>{
-
+        new Point(1, 0), 
+        new Point(1, 3), 
+        new Point(-2, 2), 
     };
     static List<Point> lvl10_Push = new List<Point>{
-
+        new Point(-1, 2), 
+        new Point(2, 1), 
+        new Point(2, 2), 
+        new Point(2, 0), 
     };
     static List<Point> lvl10_Flower = new List<Point>{
-
+        new Point(0, 4), 
+        new Point(-2, 5), 
+        new Point(-4, 2), 
+        new Point(3, -1), 
     };
 }

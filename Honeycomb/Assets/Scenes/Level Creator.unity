@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 329ee6143d1fc4711b61589bbc3dd23f, type: 2}
-  level: 8
-  loadLevel: 0
+  level: 2
+  loadLevel: 1
 --- !u!4 &500887983
 Transform:
   m_ObjectHideFlags: 0
@@ -552,6 +552,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 329ee6143d1fc4711b61589bbc3dd23f, type: 2}
   completeLevelText: {fileID: 0}
   keybindText: {fileID: 0}
+  texture: {fileID: 0}
   editMode: 1
 --- !u!4 &2139832015
 Transform:

@@ -4,7 +4,7 @@ public class CameraScript : MonoBehaviour
 {
     GameObject mapRenderer;
     Transform player;
-    MapRender mapRender;
+    MapParent mapRender;
     int moveSpeed;
 
     public bool fixedCamera = false;
@@ -15,7 +15,7 @@ public class CameraScript : MonoBehaviour
         player = GameObject.Find("Player").transform;
 
         mapRenderer = GameObject.Find("MapRenderer");
-        mapRender = mapRenderer.GetComponent<MapRender>();
+        mapRender = mapRenderer.GetComponent<MapParent>();
     }
     
     void Update()

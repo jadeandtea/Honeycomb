@@ -32,6 +32,8 @@ public class LevelManager : MonoBehaviour
     }
 
     public static void resetProgress() {
+        Debug.Log("Resetting progress");
         PlayerPrefs.SetInt("levelReached", 0);
+        SceneManager.LoadScene("Main Menu");
     }
 }

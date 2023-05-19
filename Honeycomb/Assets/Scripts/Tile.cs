@@ -56,9 +56,9 @@ public class Tile
         mesh.recalculateMesh();
     }
 
-    public void setTileMesh(Texture texture) {
-        mesh.setTileMesh(texture);
-    }
+    // public void setTileMesh(Texture texture) {
+    //     mesh.setTileMesh(texture);
+    // }
 
     public void setColor(Color outer, Color center, float t) {
         mesh.setColor(outer, center, t);

@@ -80,7 +80,7 @@ public class LevelCreatorManager : MonoBehaviour
     }
 
     void activateTiles(RaycastHit hit, Point point) {
-        MapManager tempManager = hit.transform.gameObject.GetComponentInParent<MapRender>().mapManager;
+        MapManager tempManager = hit.transform.gameObject.GetComponentInParent<MapParent>().mapManager;
                 switch (pointList[point]){
                     case TileType.Hidden:
                         tempManager.deactivateTile(point);

@@ -15,7 +15,7 @@ MonoBehaviour:
   type: 0
   hexagonSize: 1
   outlineSize: 0.95
-  tileOuterColor: {r: 0.8, g: 0.52156866, b: 0, a: 0}
+  tileOuterColor: {r: 0.8, g: 0.52156866, b: 0.01201493, a: 0}
   tileCenterColor: {r: 1, g: 1, b: 1, a: 1}
   obsOuterColor: {r: 0.6, g: 0.3882353, b: 0, a: 0}
   obsCenterColor: {r: 0, g: 0, b: 0, a: 1}
