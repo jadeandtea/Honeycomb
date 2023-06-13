@@ -3,8 +3,10 @@
 ## What is Honeycomb?
 Honeycomb is a 2D puzzle game based on a hexagonal grid. The goal of the game is to touch all flowers in the level and make it back to the hive.
 
-## Download Game
-To download a playable version, go to "https://download-directory.github.io/" and copy and paste this link into the URL text box: "https://github.com/jadeandtea/Honeycomb/tree/main/Honeycomb/Builds". The website will automatically download a zip file that contains all builds of the game. For Windows, the only runnable versions are in folder that contain a .exe file. Currently, the MacOS version doesn't work :(
+## Play Game
+A web version of the game can be found here: https://play.unity.com/mg/other/honeycomb_v1-0_webgl. 
+
+To download a version, go to "https://download-directory.github.io/". For Windows, copy and paste this link into the URL text box: "https://github.com/jadeandtea/Honeycomb/tree/main/Honeycomb/Builds/HoneyComb_v1.0_Windows". The website will automatically download a zip file that contains a build; the game runs from the HoneyComb.exe file. Currently, the MacOS version doesn't work :(. 
 
 
 ## Edit Game
