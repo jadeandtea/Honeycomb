@@ -143,7 +143,7 @@ public class MapManager
         }
     }
 
-    public void loadFlowers(int mapSize, string[] flowerSpriteList) {
+    public void loadFlowers(int mapSize, Sprite[] flowerSpriteList) {
         //Creates a map of tiles centered on (0, 0) that extends equally in all directions by the given mapSize
         
         flowers = new Dictionary<Point, Flower>();
@@ -169,7 +169,7 @@ public class MapManager
         }
     }
 
-    public void loadFlowers(List<Point> flowerList, string[] flowerSpriteList) {
+    public void loadFlowers(List<Point> flowerList, Sprite[] flowerSpriteList) {
         //Creates Flower Game Objects
 
         if (editMode) {

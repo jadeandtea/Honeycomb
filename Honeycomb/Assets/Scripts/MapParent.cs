@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MapParent : MonoBehaviour
 {
-    string[] flowerSpriteList;
+    public Sprite[] flowerSpriteList;
     public MapSettings settings;
 
     public MapManager mapManager;
@@ -66,7 +66,6 @@ public class MapParent : MonoBehaviour
         mapManager.loadObstacles(Level.obstacles);
         mapManager.loadPushables(Level.pushables);
 
-        flowerSpriteList = new string[3]{"Assets/FlowerSpriteList/Black-eyed Susan.png", "Assets/FlowerSpriteList/Daisy.png", "Assets/FlowerSpriteList/Rose.png"};
         mapManager.loadFlowers(Level.flowers, flowerSpriteList);
 
         mapManager.updateCoordinates();

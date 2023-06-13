@@ -1983,6 +1983,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f427db058d74fa49fdd462c6124d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flowerSpriteList:
+  - {fileID: 21300000, guid: a783a9581c1b74959b3902481dc1163c, type: 3}
+  - {fileID: 21300000, guid: 69f3585a3d30145fe969fdcc9385d3c0, type: 3}
+  - {fileID: 21300000, guid: 1483da04f84ea46d89679d400de60594, type: 3}
   settings: {fileID: 11400000, guid: 1e25ab0311c54499c81e2ad4836b5b9b, type: 2}
   completeLevelText: {fileID: 693875249}
   keybindText: {fileID: 849383674}

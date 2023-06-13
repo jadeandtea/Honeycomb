@@ -1,5 +1,3 @@
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine;
 
 public class Flower
@@ -7,61 +5,55 @@ public class Flower
     MapSettings settings;
     //Used in MapRender to handle addressable flowers and associated Game Objects
     Point mapCoord;
-    Sprite main;
+
+    Vector3 targetPosition;
+
     const float ZLAYER = -0.1f;
-    Sprite[] spriteAry;
+
     SpriteRenderer spriteRenderer;
     GameObject host;
-    AsyncOperationHandle<Sprite[]> spriteHandle;
 
-    public string key;
 
     public bool isActive;
 
-    public Flower(MapSettings settings, GameObject host, string key, Point mapCoordinate, bool editMode = false) {
+    public Flower(MapSettings settings, GameObject host, Sprite spriteAry, Point mapCoordinate, bool editMode = false) {
         this.settings = settings;
         this.mapCoord = mapCoordinate;
         this.host = host;
-        this.key = key;
+
+        host.transform.position = Vector3.zero;
 
         this.isActive = !editMode;
 
-        spriteAry = new Sprite[1];
         spriteRenderer = host.AddComponent<SpriteRenderer>();
-
-        loadSprites();
-    }
-
-    private void loadSprites() {
-        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(key);
-        spriteHandle.Completed += LoadSpritesWhenReady;
-    }
-
-    private void LoadSpritesWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck) { 
-        if(handleToCheck.Status == AsyncOperationStatus.Succeeded)
-        {
-            spriteAry = handleToCheck.Result;
-            host.transform.position = new Vector3(mapCoord.x * 3 / 2f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 2f + mapCoord.y * Mathf.Sqrt(3)) * settings.hexagonSize, ZLAYER);
-
-            spriteRenderer.sprite = spriteAry[0];
-        }
+        spriteRenderer.sprite = spriteAry;
     }
 
     public void update() {
         if(settings.type == MapSettings.HexType.Flat) {
-            host.transform.position = new Vector3(mapCoord.x * 3 / 2f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 2f + mapCoord.y * Mathf.Sqrt(3)) * settings.hexagonSize, ZLAYER);
+            targetPosition = new Vector3(mapCoord.x * 3 / 2f * settings.hexagonSize, (mapCoord.x * Mathf.Sqrt(3) / 2f + mapCoord.y * Mathf.Sqrt(3)) * settings.hexagonSize, ZLAYER);
         } else if (settings.type == MapSettings.HexType.Pointy) {
-            host.transform.position = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize + mapCoord.y * Mathf.Sqrt(3) / 2 * settings.hexagonSize, mapCoord.y * 3 / 2f * settings.hexagonSize, ZLAYER);
+            targetPosition = new Vector3(mapCoord.x * Mathf.Sqrt(3) * settings.hexagonSize + mapCoord.y * Mathf.Sqrt(3) / 2 * settings.hexagonSize, mapCoord.y * 3 / 2f * settings.hexagonSize, ZLAYER);
         }
+
+        smoothMove();
         spriteRenderer.enabled = isActive;
     }
 
+    void smoothMove() {
+            Vector3 dir = targetPosition - host.transform.position;
+
+            if(dir != Vector3.zero){
+                host.transform.position += dir * Time.deltaTime * settings.moveSpeed;
+            
+                if (Vector3.Magnitude(host.transform.position - targetPosition) < 0.001f) {
+                    host.transform.position = targetPosition;
+                }
+            }
+        }
+
     public void Destroy() {
         GameObject.Destroy(host);
-    }
-
-    public void OnDestroy() {
-        Addressables.Release(spriteHandle);
     }
     
 

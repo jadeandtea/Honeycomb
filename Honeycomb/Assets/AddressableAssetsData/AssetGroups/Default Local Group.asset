@@ -16,22 +16,12 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 138f4766afc6e4815a6249cfab3384b6
-  m_SerializeEntries:
-  - m_GUID: a783a9581c1b74959b3902481dc1163c
-    m_Address: Assets/FlowerSpriteList/Black-eyed Susan.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 69f3585a3d30145fe969fdcc9385d3c0
-    m_Address: Assets/FlowerSpriteList/Daisy.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 1483da04f84ea46d89679d400de60594
-    m_Address: Assets/FlowerSpriteList/Rose.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8da37e324650e45ba8a36af17740d139, type: 2}
   m_SchemaSet:
     m_Schemas:
     - {fileID: 11400000, guid: aabaac0d77e9d41489ce63d41ea4147c, type: 2}
     - {fileID: 11400000, guid: 2ba6f401d64bc491da438953be8d940b, type: 2}
+  m_FolderEntryCache: []
+  m_AssetCollectionEntryCache: []

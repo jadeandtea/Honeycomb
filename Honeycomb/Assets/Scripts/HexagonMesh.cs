@@ -35,7 +35,6 @@ public class HexagonMesh {
         float zLayer = 0;
 
         Vector3 targetPosition;
-        int moveSpeed = 7;
 
         MapSettings.HexType type;
 
@@ -179,7 +178,7 @@ public class HexagonMesh {
             Vector3 dir = targetPosition - gameObject.transform.position;
 
             if(dir != Vector3.zero){
-                gameObject.transform.position += dir * Time.deltaTime * moveSpeed;
+                gameObject.transform.position += dir * Time.deltaTime * settings.moveSpeed;
             
                 if (Vector3.Magnitude(gameObject.transform.position - targetPosition) < 0.001f) {
                     gameObject.transform.position = targetPosition;

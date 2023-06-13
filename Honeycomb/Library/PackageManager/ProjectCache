@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638156088200000000
-    m_Hash: 20015550
+      ticks: 638222437440000000
+    m_Hash: 183823506
   m_LockFileStatus:
     m_FilePath: /Users/jadentian/Unity/Bee Game/Honeycomb/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638156088200000000
-    m_Hash: 2483025451
+      ticks: 638222437460000000
+    m_Hash: 2037201851
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -22,205 +22,6 @@ m_LocalPackages:
 m_ProjectPath: /Users/jadentian/Unity/Bee Game/Honeycomb/Packages
 m_EditorVersion: 2021.3.22f1 (b6c551784ba3)
 m_ResolvedPackages:
-- packageId: com.unity.addressables@1.19.19
-  testable: 0
-  isDirectDependency: 1
-  version: 1.19.19
-  source: 1
-  resolvedPath: /Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.addressables@1.19.19
-  assetPath: Packages/com.unity.addressables
-  name: com.unity.addressables
-  displayName: Addressables
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: asset
-  description: 'The Addressable Asset System allows the developer to ask for an asset
-    via its address. Once an asset (e.g. a prefab) is marked "addressable", it generates
-    an address which can be called from anywhere. Wherever the asset resides (local
-    or remote), the system will locate it and its dependencies, then return it.
-
-
-    Use
-    ''Window->Asset Management->Addressables'' to begin working with the system.
-
-
-    Addressables
-    use asynchronous loading to support loading from any location with any collection
-    of dependencies. Whether you have been using direct references, traditional asset
-    bundles, or Resource folders, addressables provide a simpler way to make your
-    game more dynamic. Addressables simultaneously opens up the world of asset bundles
-    while managing all the complexity.
-
-
-    For usage samples, see github.com/Unity-Technologies/Addressables-Sample'
-  status: 0
-  errors: []
-  versions:
-    all:
-    - 0.0.8-preview
-    - 0.0.12-preview
-    - 0.0.15-preview
-    - 0.0.16-preview
-    - 0.0.18-preview
-    - 0.0.22-preview
-    - 0.0.26-preview
-    - 0.0.27-preview
-    - 0.1.2-preview
-    - 0.2.1-preview
-    - 0.2.2-preview
-    - 0.3.5-preview
-    - 0.4.6-preview
-    - 0.4.8-preview
-    - 0.5.2-preview
-    - 0.5.3-preview
-    - 0.6.6-preview
-    - 0.6.7-preview
-    - 0.6.8-preview
-    - 0.7.4-preview
-    - 0.7.5-preview
-    - 0.8.4-preview
-    - 0.8.6-preview
-    - 1.1.3-preview
-    - 1.1.4-preview
-    - 1.1.5
-    - 1.1.7
-    - 1.1.9
-    - 1.1.10
-    - 1.2.2
-    - 1.2.3
-    - 1.2.4
-    - 1.3.3
-    - 1.3.8
-    - 1.4.0
-    - 1.5.0
-    - 1.5.1
-    - 1.6.0
-    - 1.6.2
-    - 1.7.4
-    - 1.7.5
-    - 1.8.3
-    - 1.8.4
-    - 1.8.5
-    - 1.9.2
-    - 1.10.0
-    - 1.11.2
-    - 1.12.0
-    - 1.13.1
-    - 1.14.2
-    - 1.15.1
-    - 1.16.1
-    - 1.16.6
-    - 1.16.7
-    - 1.16.8
-    - 1.16.10
-    - 1.16.12
-    - 1.16.13
-    - 1.16.15
-    - 1.16.16
-    - 1.16.19
-    - 1.17.0-preview
-    - 1.17.2-preview
-    - 1.17.4-preview
-    - 1.17.5-preview
-    - 1.17.6-preview
-    - 1.17.13
-    - 1.17.15
-    - 1.17.17
-    - 1.18.2
-    - 1.18.4
-    - 1.18.9
-    - 1.18.11
-    - 1.18.13
-    - 1.18.15
-    - 1.18.16
-    - 1.18.19
-    - 1.19.4
-    - 1.19.6
-    - 1.19.9
-    - 1.19.11
-    - 1.19.13
-    - 1.19.14
-    - 1.19.15
-    - 1.19.17
-    - 1.19.18
-    - 1.19.19
-    - 1.20.0
-    - 1.20.3
-    - 1.20.5
-    - 1.21.1
-    - 1.21.2
-    - 1.21.3
-    - 1.21.8
-    - 1.21.9
-    - 1.21.10
-    compatible:
-    - 1.19.19
-    - 1.20.0
-    - 1.20.3
-    - 1.20.5
-    - 1.21.1
-    - 1.21.2
-    - 1.21.3
-    - 1.21.8
-    - 1.21.9
-    - 1.21.10
-    verified: 1.19.19
-  dependencies:
-  - name: com.unity.scriptablebuildpipeline
-    version: 1.19.6
-  - name: com.unity.modules.assetbundle
-    version: 1.0.0
-  - name: com.unity.modules.imageconversion
-    version: 1.0.0
-  - name: com.unity.modules.jsonserialize
-    version: 1.0.0
-  - name: com.unity.modules.unitywebrequest
-    version: 1.0.0
-  - name: com.unity.modules.unitywebrequestassetbundle
-    version: 1.0.0
-  resolvedDependencies:
-  - name: com.unity.scriptablebuildpipeline
-    version: 1.20.1
-  - name: com.unity.modules.assetbundle
-    version: 1.0.0
-  - name: com.unity.modules.imageconversion
-    version: 1.0.0
-  - name: com.unity.modules.jsonserialize
-    version: 1.0.0
-  - name: com.unity.modules.unitywebrequest
-    version: 1.0.0
-  - name: com.unity.modules.unitywebrequestassetbundle
-    version: 1.0.0
-  keywords:
-  - asset
-  - resources
-  - bundle
-  - bundles
-  - assetbundles
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 0
-  isAssetStorePackage: 0
-  datePublishedTicks: 637819852270000000
-  documentationUrl: 
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/Addressables.git
-    revision: 2ac2ed2277c173a9a41ffeafa080525578c38e4f
-    path: 
-  unityLifecycle:
-    version: 1.19.19
-    nextVersion: 
 - packageId: com.unity.collab-proxy@2.0.1
   testable: 0
   isDirectDependency: 1
@@ -306,6 +107,7 @@ m_ResolvedPackages:
     - 2.0.1
     - 2.0.3
     - 2.0.4
+    - 2.0.5
     - 2.1.0-preview.3
     - 2.1.0-preview.5
     - 2.1.0-preview.6
@@ -313,10 +115,11 @@ m_ResolvedPackages:
     - 2.0.1
     - 2.0.3
     - 2.0.4
+    - 2.0.5
     - 2.1.0-preview.3
     - 2.1.0-preview.5
     - 2.1.0-preview.6
-    verified: 2.0.4
+    verified: 2.0.5
   dependencies: []
   resolvedDependencies: []
   keywords:
@@ -354,6 +157,94 @@ m_ResolvedPackages:
     path: 
   unityLifecycle:
     version: 2.0.1
+    nextVersion: 
+- packageId: com.unity.connect.share@4.2.3
+  testable: 0
+  isDirectDependency: 1
+  version: 4.2.3
+  source: 1
+  resolvedPath: /Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.connect.share@4.2.3
+  assetPath: Packages/com.unity.connect.share
+  name: com.unity.connect.share
+  displayName: WebGL Publisher
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: tool
+  description: This tool allows you to make a WebGL build of your current project
+    and upload it to Unity's website, where it can be shared with others.
+  status: 0
+  errors: []
+  versions:
+    all:
+    - 1.0.0-preview
+    - 1.0.1-preview
+    - 1.0.2-preview
+    - 1.0.3-preview
+    - 1.0.4-preview
+    - 1.0.5-preview
+    - 1.0.6-preview.2
+    - 1.0.7-preview
+    - 1.0.8-preview
+    - 1.0.9-preview
+    - 1.0.10-preview
+    - 1.1.0-preview.1
+    - 1.2.0-preview.1
+    - 2.0.1-preview
+    - 2.0.2-preview.3
+    - 2.0.2-preview.4
+    - 2.0.3
+    - 2.0.5
+    - 2.0.6
+    - 2.1.0
+    - 3.0.0
+    - 4.0.1
+    - 4.0.2
+    - 4.0.3
+    - 4.1.0
+    - 4.1.1
+    - 4.2.1
+    - 4.2.2
+    - 4.2.3
+    compatible:
+    - 4.2.3
+    verified: 4.2.3
+  dependencies:
+  - name: com.unity.editorcoroutines
+    version: 1.0.0
+  - name: com.unity.settings-manager
+    version: 1.0.2
+  resolvedDependencies:
+  - name: com.unity.editorcoroutines
+    version: 1.0.0
+  - name: com.unity.settings-manager
+    version: 1.0.3
+  keywords:
+  - webgl
+  - share
+  - connect
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 637695698090000000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.connect.share.git
+    revision: 9a66a825d48494378f81fc94289eddd505df1c40
+    path: 
+  unityLifecycle:
+    version: 4.2.3
     nextVersion: 
 - packageId: com.unity.feature.development@1.0.1
   testable: 0
@@ -500,11 +391,15 @@ m_ResolvedPackages:
     - 3.0.18
     - 3.0.20
     - 3.0.21
+    - 3.0.22
+    - 3.0.24
     compatible:
     - 3.0.18
     - 3.0.20
     - 3.0.21
-    verified: 3.0.21
+    - 3.0.22
+    - 3.0.24
+    verified: 3.0.24
   dependencies:
   - name: com.unity.ext.nunit
     version: 1.0.6
@@ -932,6 +827,7 @@ m_ResolvedPackages:
     - 1.8.0
     - 1.8.1
     - 1.8.2
+    - 1.8.3
     compatible:
     - 1.6.4
     - 1.6.5
@@ -945,6 +841,7 @@ m_ResolvedPackages:
     - 1.8.0
     - 1.8.1
     - 1.8.2
+    - 1.8.3
     verified: 1.6.5
   dependencies:
   - name: com.unity.modules.director
@@ -3123,6 +3020,7 @@ m_ResolvedPackages:
     - 1.8.2
     - 1.8.3
     - 1.8.4
+    - 1.8.7
     compatible:
     - 1.6.6
     - 1.7.0-pre.1
@@ -3138,6 +3036,7 @@ m_ResolvedPackages:
     - 1.8.2
     - 1.8.3
     - 1.8.4
+    - 1.8.7
     verified: 1.6.6
   dependencies:
   - name: com.unity.mathematics
@@ -3889,6 +3788,8 @@ m_ResolvedPackages:
     - 1.3.2
     - 1.3.3
     - 1.3.4
+    - 1.3.5
+    - 1.3.7
     - 2.0.1-exp.1
     - 2.0.1-exp.2
     - 2.0.1-pre.12
@@ -3901,6 +3802,8 @@ m_ResolvedPackages:
     - 1.3.2
     - 1.3.3
     - 1.3.4
+    - 1.3.5
+    - 1.3.7
     - 2.0.1-exp.1
     - 2.0.1-exp.2
     - 2.0.1-pre.12
@@ -3996,10 +3899,12 @@ m_ResolvedPackages:
     - 1.2.1
     - 1.2.2
     - 1.2.3
+    - 1.2.4
     compatible:
     - 1.2.2
     - 1.2.3
-    verified: 1.2.3
+    - 1.2.4
+    verified: 1.2.4
   dependencies:
   - name: com.unity.test-framework
     version: 1.0.16
@@ -4042,101 +3947,43 @@ m_ResolvedPackages:
   unityLifecycle:
     version: 1.2.2
     nextVersion: 
-- packageId: com.unity.scriptablebuildpipeline@1.20.1
+- packageId: com.unity.settings-manager@1.0.3
   testable: 0
   isDirectDependency: 0
-  version: 1.20.1
+  version: 1.0.3
   source: 1
-  resolvedPath: /Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.scriptablebuildpipeline@1.20.1
-  assetPath: Packages/com.unity.scriptablebuildpipeline
-  name: com.unity.scriptablebuildpipeline
-  displayName: Scriptable Build Pipeline
+  resolvedPath: /Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.settings-manager@1.0.3
+  assetPath: Packages/com.unity.settings-manager
+  name: com.unity.settings-manager
+  displayName: Settings Manager
   author:
     name: 
     email: 
     url: 
   category: 
-  type: asset
-  description: The Scriptable Build Pipeline moves the asset bundle build pipeline
-    to C#.  Use the pre-defined build flows, or create your own using the divided
-    up APIs.  This system improves build time, fixes incremental build, and provides
-    greater flexibility.
+  type: 
+  description: A framework for making any serializable field a setting, complete
+    with a pre-built settings interface.
   status: 0
   errors: []
   versions:
     all:
-    - 0.0.5-preview
-    - 0.0.6-preview
-    - 0.0.8-preview
-    - 0.0.9-preview
-    - 0.0.10-preview
-    - 0.0.14-preview
-    - 0.0.15-preview
-    - 0.1.0-preview
-    - 0.2.0-preview
-    - 1.0.1-preview
-    - 1.1.0-preview
-    - 1.1.1-preview
-    - 1.2.1-preview
-    - 1.3.5-preview
-    - 1.4.1-preview
-    - 1.5.0-preview
-    - 1.5.1
-    - 1.5.2
-    - 1.5.4
-    - 1.5.6
-    - 1.5.10
-    - 1.6.3-preview
-    - 1.6.4-preview
-    - 1.6.5-preview
-    - 1.7.2
-    - 1.7.3
-    - 1.8.2
-    - 1.8.4
-    - 1.8.6
-    - 1.9.0
-    - 1.10.0
-    - 1.11.1
-    - 1.11.2
-    - 1.12.0
-    - 1.13.1
-    - 1.14.0
-    - 1.14.1
-    - 1.15.1
-    - 1.15.2
-    - 1.16.1
-    - 1.17.0
-    - 1.18.0
-    - 1.19.0
-    - 1.19.1
-    - 1.19.2
-    - 1.19.3
-    - 1.19.4
-    - 1.19.5
-    - 1.19.6
-    - 1.20.1
-    - 1.20.2
-    - 1.21.0
-    - 1.21.1
-    - 1.21.2
-    - 1.21.3
+    - 0.1.0-preview.4
+    - 0.1.0-preview.8
+    - 1.0.0
+    - 1.0.1
+    - 1.0.2
+    - 1.0.3
+    - 2.0.0
+    - 2.0.1
     compatible:
-    - 1.20.1
-    - 1.20.2
-    - 1.21.0
-    - 1.21.1
-    - 1.21.2
-    - 1.21.3
-    verified: 1.20.2
+    - 1.0.3
+    - 2.0.0
+    - 2.0.1
+    verified: 1.0.3
   dependencies: []
   resolvedDependencies: []
-  keywords:
-  - build
-  - bundle
-  - bundles
-  - assetbundles
-  - cache
-  - server
+  keywords: []
   registry:
     id: main
     name: 
@@ -4145,18 +3992,18 @@ m_ResolvedPackages:
     isDefault: 1
     capabilities: 7
     configSource: 0
-  hideInEditor: 0
+  hideInEditor: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 637874640850000000
+  datePublishedTicks: 637300096300000000
   documentationUrl: 
   hasRepository: 1
   repository:
     type: git
-    url: https://github.cds.internal.unity3d.com/unity/Addressables.git
-    revision: f2d9aac4eb254f268ff4e23f800ccc30c53dbd75
+    url: git+https://github.com/Unity-Technologies/com.unity.settings-manager.git
+    revision: 473664ccba1496294b741cf169740a5d54b3d0b6
     path: 
   unityLifecycle:
-    version: 1.20.1
+    version: 1.0.3
     nextVersion: 
 - packageId: com.unity.searcher@4.9.1
   testable: 0
@@ -4224,62 +4071,4 @@ m_ResolvedPackages:
     path: 
   unityLifecycle:
     version: 4.9.1
-    nextVersion: 
-- packageId: com.unity.settings-manager@1.0.3
-  testable: 0
-  isDirectDependency: 0
-  version: 1.0.3
-  source: 1
-  resolvedPath: /Users/jadentian/Unity/Bee Game/Honeycomb/Library/PackageCache/com.unity.settings-manager@1.0.3
-  assetPath: Packages/com.unity.settings-manager
-  name: com.unity.settings-manager
-  displayName: Settings Manager
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: A framework for making any serializable field a setting, complete
-    with a pre-built settings interface.
-  status: 0
-  errors: []
-  versions:
-    all:
-    - 0.1.0-preview.4
-    - 0.1.0-preview.8
-    - 1.0.0
-    - 1.0.1
-    - 1.0.2
-    - 1.0.3
-    - 2.0.0
-    - 2.0.1
-    compatible:
-    - 1.0.3
-    - 2.0.0
-    - 2.0.1
-    verified: 1.0.3
-  dependencies: []
-  resolvedDependencies: []
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 637300096300000000
-  documentationUrl: 
-  hasRepository: 1
-  repository:
-    type: git
-    url: git+https://github.com/Unity-Technologies/com.unity.settings-manager.git
-    revision: 473664ccba1496294b741cf169740a5d54b3d0b6
-    path: 
-  unityLifecycle:
-    version: 1.0.3
     nextVersion: 
