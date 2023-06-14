@@ -156,6 +156,7 @@ public class MapManager
 
                     GameObject tempFlowerRef = new GameObject("(" + x + ", " + y + ", " + s + ")");
                     tempFlowerRef.transform.position = Vector3.zero;
+                    
 
                     Flower flower = new Flower(settings, tempFlowerRef, flowerSpriteList[flowerIndex], new Point(x, y), editMode);
                     
@@ -413,6 +414,21 @@ public class MapManager
         }
         foreach(KeyValuePair<Point, Flower> valuePair in flowers) {
             valuePair.Value.Destroy();
+        }
+    }
+
+    public void DestroyImmediate() {
+        foreach(KeyValuePair<Point, Tile> valuePair in tiles) {
+            valuePair.Value.DestroyImmediate();
+        }
+        foreach(KeyValuePair<Point, Obstacle> valuePair in obstacles) {
+            valuePair.Value.DestroyImmediate();
+        }
+        foreach(KeyValuePair<Point, Obstacle> valuePair in pushables) {
+            valuePair.Value.DestroyImmediate();
+        }
+        foreach(KeyValuePair<Point, Flower> valuePair in flowers) {
+            valuePair.Value.DestroyImmediate();
         }
     }
 }

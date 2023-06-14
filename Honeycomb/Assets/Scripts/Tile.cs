@@ -67,4 +67,8 @@ public class Tile
     public void Destroy() {
         GameObject.Destroy(host);
     }
+
+    public void DestroyImmediate() {
+        GameObject.DestroyImmediate(host);
+    }
 }

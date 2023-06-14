@@ -10,6 +10,8 @@ public class  MapSettings : ScriptableObject {
     }
     // Settings
 
+    public Sprite[] flowerSpriteList;
+
     public HexType type = HexType.Flat;
     public float hexagonSize = 1;
     [Range(0, 1)]

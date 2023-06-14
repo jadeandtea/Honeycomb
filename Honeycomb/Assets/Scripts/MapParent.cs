@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class MapParent : MonoBehaviour
 {
-    public Sprite[] flowerSpriteList;
     public MapSettings settings;
 
     public MapManager mapManager;
@@ -15,9 +14,34 @@ public class MapParent : MonoBehaviour
     public Texture texture;
 
     public bool editMode = false;
+    public bool loadLevel = false;
+    public int level = 0;
 
-    public void Start(){
+    [ContextMenu("Load Level")]
+    private void reload() 
+    {
+        if(loadLevel)
+            LevelManager.currentLevelNumber = level;
+        Level.loadLevel();
         reloadLevel();
+        InstantUpdate();
+    }
+
+    [ContextMenu("Clear Level")]
+    private void clear() 
+    {
+        while(transform.childCount > 0) {
+            GameObject.DestroyImmediate(transform.GetChild(0).gameObject);
+        }
+    }
+
+    public void Awake(){
+        if(loadLevel)
+            LevelManager.currentLevelNumber = level;
+        Level.loadLevel();
+
+        clear();
+        reloadLevel();        
     }
 
     public void FixedUpdate() {  
@@ -50,10 +74,39 @@ public class MapParent : MonoBehaviour
         mapManager.updateCoordinates();
     }
 
+    private void InstantUpdate() {
+        //Moves all the tiles to where they want to go instantly
+        foreach(KeyValuePair<Point, Tile> pair in mapManager.getTiles()) {
+            Tile tile = pair.Value;
+            Point mapCoord = pair.Key;
+            tile.setActiveLocation(mapCoord);
+            tile.setColor(settings.tileOuterColor, settings.tileCenterColor, settings.centerColorWeight);
+        }
+        foreach(KeyValuePair<Point, Obstacle> pair in mapManager.getObstacles()) {
+            Obstacle obstacle = pair.Value;
+            Point mapCoord = pair.Key;
+            obstacle.setActiveLocation(mapCoord);
+            obstacle.setColor(settings.obsOuterColor, settings.obsCenterColor, settings.centerColorWeight);
+        }
+        foreach(KeyValuePair<Point, Obstacle> pair in mapManager.getPushables()) {
+            Obstacle pushable = pair.Value;
+            Point mapCoord = pair.Key;
+            pushable.setActiveLocation(mapCoord);
+            pushable.setColor(settings.pushOuterColor, settings.pushCenterColor, settings.centerColorWeight);
+        }
+        foreach(KeyValuePair<Point, Flower> pair in mapManager.getFlowers()) {
+            Flower flower = pair.Value;
+            Point mapCoord = pair.Key;
+            flower.setActiveLocation(mapCoord);
+        }
+        mapManager.updateCoordinates();
+    }
+
     public void reloadLevel() {
         if(mapManager != null) {
-            mapManager.Destroy();
+            mapManager.DestroyImmediate();
         }
+
         if(keybindText != null) {
             keybindText.FadeTextToFullAlpha();
         }
@@ -66,7 +119,7 @@ public class MapParent : MonoBehaviour
         mapManager.loadObstacles(Level.obstacles);
         mapManager.loadPushables(Level.pushables);
 
-        mapManager.loadFlowers(Level.flowers, flowerSpriteList);
+        mapManager.loadFlowers(Level.flowers, settings.flowerSpriteList);
 
         mapManager.updateCoordinates();
     }

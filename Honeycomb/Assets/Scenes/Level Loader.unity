@@ -288,8 +288,8 @@ Transform:
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2099623795}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &71727679
 MonoBehaviour:
@@ -537,8 +537,8 @@ Transform:
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2099623795}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &583745315
 SpriteRenderer:
@@ -1096,8 +1096,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 1526726655
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.35333335}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1983,15 +1983,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f427db058d74fa49fdd462c6124d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowerSpriteList:
-  - {fileID: 21300000, guid: a783a9581c1b74959b3902481dc1163c, type: 3}
-  - {fileID: 21300000, guid: 69f3585a3d30145fe969fdcc9385d3c0, type: 3}
-  - {fileID: 21300000, guid: 1483da04f84ea46d89679d400de60594, type: 3}
   settings: {fileID: 11400000, guid: 1e25ab0311c54499c81e2ad4836b5b9b, type: 2}
   completeLevelText: {fileID: 693875249}
   keybindText: {fileID: 849383674}
   texture: {fileID: 0}
   editMode: 0
+  loadLevel: 1
+  level: 2
 --- !u!4 &2099623795
 Transform:
   m_ObjectHideFlags: 0
@@ -2003,9 +2001,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 71727678}
-  - {fileID: 583745314}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

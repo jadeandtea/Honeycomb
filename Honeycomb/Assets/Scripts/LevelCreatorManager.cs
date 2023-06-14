@@ -9,20 +9,14 @@ public class LevelCreatorManager : MonoBehaviour
     static Dictionary<Point, TileType> pointList;
     int layerMask;
 
-    public int level = 1;
-    public bool loadLevel = false;
-
     enum TileType{
         Hidden, Tile, Obstacle, Pushable, Flower
     }
 
-    void Awake() {
+    void Start() {
         layerMask = LayerMask.GetMask("Tiles");
         pointList = new Dictionary<Point, TileType>();
 
-        if(loadLevel)
-            LevelManager.currentLevelNumber = level;
-        Level.loadLevel();
         loadPoints(Level.map, Level.obstacles, Level.pushables, Level.flowers);
     }
 

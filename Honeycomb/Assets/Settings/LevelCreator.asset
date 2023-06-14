@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad05429cb29d42c9b1d2c55324b6b88, type: 3}
   m_Name: LevelCreator
   m_EditorClassIdentifier: 
+  flowerSpriteList:
+  - {fileID: 21300000, guid: a783a9581c1b74959b3902481dc1163c, type: 3}
+  - {fileID: 21300000, guid: 69f3585a3d30145fe969fdcc9385d3c0, type: 3}
+  - {fileID: 21300000, guid: 1483da04f84ea46d89679d400de60594, type: 3}
   type: 0
   hexagonSize: 1
   outlineSize: 0.95
@@ -19,4 +23,8 @@ MonoBehaviour:
   tileCenterColor: {r: 1, g: 1, b: 1, a: 0}
   obsOuterColor: {r: 0.7, g: 0.45294118, b: 0, a: 0.2509804}
   obsCenterColor: {r: 1, g: 0.9127451, b: 0.75, a: 0}
+  pushOuterColor: {r: 153, g: 99, b: 0, a: 0}
+  pushCenterColor: {r: 1, g: 1, b: 1, a: 1}
   centerColorWeight: 0.4
+  moveSpeed: 7
+  turnSpeed: 5

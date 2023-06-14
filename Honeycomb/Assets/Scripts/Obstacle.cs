@@ -43,8 +43,17 @@ public class Obstacle
         host.transform.SetParent(parent);
     }
 
+    public void setActiveLocation(Point mapCoord) {
+        // Instantly places tile at mapCoord
+        mesh.setActiveLocation(mapCoord);
+    }
+
     public void Destroy() {
         GameObject.Destroy(host);
+    }
+
+    public void DestroyImmediate() {
+        GameObject.DestroyImmediate(host);
     }
 
     public void updateObs(Point mapCoord) {
